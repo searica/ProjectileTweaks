@@ -1,8 +1,8 @@
 ﻿{
   "name": "ProjectileTweaks",
-  "description": "",
+  "description": "A lightweight mod to tweak projectile from player weapons.",
   "version_number": "0.0.1",
-  "website_url": "",
+  "website_url": "https://github.com/searica/ProjectileTweaks",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2202",
     "ValheimModding-Jotunn-2.14.6"

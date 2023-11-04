@@ -4,7 +4,6 @@ using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using Jotunn.Managers;
-using ProjectileTweaks.Logging;
 using System;
 
 using System.IO;
