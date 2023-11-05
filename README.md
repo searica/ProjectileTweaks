@@ -1,10 +1,10 @@
-﻿# ProjectileTweaks
+# ProjectileTweaks
 A lightweight gameplay mod that lets you customize how firing projectiles works. Allows customization of bows, crossbows, and staffs. Uses Jotunn to sync configurations if the mod is installed on the server.
 
 **Server-Side Info**: This mod works as a purely client side mod but can optionally be installed on the server to enforce custom configuration settings.
 
 ## Description
-ProjectileTweaks is intended to be a lightweight and open-source mod that provides an alternative to BetterArchery and BowPlugin. Some of ProjectileTweaks features also overlap with MagicPlugin but the two are fully compatible so you can still enjoy the extra features from MagicPlugin. 
+ProjectileTweaks is intended to be a lightweight and open-source mod that provides an alternative to BetterArchery and BowPlugin. Some of ProjectileTweaks features also overlap with MagicPlugin but the two are fully compatible so you can still enjoy the extra features from MagicPlugin.
 
 Tweaks are applied separately for bows, crossbows, and staffs.
 
@@ -15,7 +15,7 @@ For bows and crossbows you can customize:
 - Launch angle of arrows and bolts
 - Position that arrows and bolts spawn relative to the player when they are fired by changing the horizontal and vertical offsets
 
-The default configuration adjusts bows to launch arrows at the same angle as crossbows. The spawn location of arrows is also tweaked to improve the alignment of arrow trajectory with the aiming crosshairs, so arrows fired with zero spread launch in alignment with the crosshair rather than being slightly offset towards the players left side. 
+The default configuration adjusts bows to launch arrows at the same angle as crossbows. The spawn location of arrows is also tweaked to improve the alignment of arrow trajectory with the aiming crosshairs, so arrows fired with zero spread launch in alignment with the crosshair rather than being slightly offset towards the players left side.
 
 ### Staffs
 For staffs you can customize:
@@ -23,7 +23,7 @@ For staffs you can customize:
 - Velocity of projectiles
 - Position that projectiles spawn relative to the player when they are fired by changing the horizontal and vertical offsets
 
-The default configuration adjusts the spawn position of projectiles fired from staffs so that if spread is set to zero the projectile is aligned with the aiming crosshair.  
+The default configuration adjusts the spawn position of projectiles fired from staffs so that if spread is set to zero the projectile is aligned with the aiming crosshair.
 
 ## Configuration
 A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created after running the game once with this mod. You can adjust the config values by editing this file using a text editor or in-game using the Configuration Manager. The mod has a built-in file watcher so either method will work and changes will be reflected in-game as you change the settings.
@@ -112,7 +112,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 These are non-exhaustive lists, feel free to let me know if you want a mod added to any of the lists.
 
 ### Incompatible Mods
-**BetterArchery (by ishid4)**: BetterArchery touches a lot of the same game code and the features it provides can be replaced using a combination of ProjectileTweaks and BowsBeforeHoes so I won't be supporting any incompatibly or unexpected behavior that occurs if you use ProjectileTweaks alongside BetterArchery. 
+**BetterArchery (by ishid4)**: BetterArchery touches a lot of the same game code and the features it provides can be replaced using a combination of ProjectileTweaks and BowsBeforeHoes so I won't be supporting any incompatibly or unexpected behavior that occurs if you use ProjectileTweaks alongside BetterArchery.
 
 ### Partial Incompatibility
 **MagicPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles launched from staffs work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultiper` set to 1 in the configuration for ProjectileTweaks.
@@ -128,7 +128,7 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
   [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/searica)
 
 ## Source Code
-Github: https://github.com/searica/ProjectileTweaks 
+Github: https://github.com/searica/ProjectileTweaks
 
 ### Contributions
 If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on the [Jotunn discord](https://discord.gg/DdUt6g7gyA) or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax).
