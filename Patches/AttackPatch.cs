@@ -8,6 +8,8 @@ namespace ProjectileTweaks.Patches
     internal class AttackPatch
     {
         [HarmonyPostfix]
+        [HarmonyBefore("blacks7ar.BowPlugin")]
+        [HarmonyPriority(Priority.VeryHigh)]
         [HarmonyPatch(nameof(Attack.Start))]
         internal static void AttackStartPrefix(Attack __instance)
         {
