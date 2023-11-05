@@ -16,7 +16,7 @@ namespace ProjectileTweaks
         internal const string Author = "Searica";
         public const string PluginName = "ProjectileTweaks";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "0.0.1";
+        public const string PluginVersion = "1.0.0";
 
         // Use this class to add your own localization to the game
         // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
@@ -34,7 +34,6 @@ namespace ProjectileTweaks
             Game.isModded = true;
 
             Configs.Config.SetupWatcher();
-            Configs.Config.CheckForConfigManager();
         }
 
         public void OnDestroy()

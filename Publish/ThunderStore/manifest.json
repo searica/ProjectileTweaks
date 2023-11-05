@@ -1,7 +1,7 @@
 ﻿{
   "name": "ProjectileTweaks",
-  "description": "A lightweight mod to tweak projectile from player weapons.",
-  "version_number": "0.0.1",
+  "description": "A lightweight gameplay mod that lets you customize how firing projectiles works. Allows customization of bows, crossbows, and staffs. Uses Jotunn to sync configurations if the mod is installed on the server.",
+  "version_number": "1.0.0",
   "website_url": "https://github.com/searica/ProjectileTweaks",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2202",
