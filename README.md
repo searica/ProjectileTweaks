@@ -120,7 +120,7 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
 **BowPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles fired from bows and crossbows work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultipier` set to 1 in the configuration for both Bows and Crossbows. I have also set up ProjectileTweaks so that the settings for `LaunchAngle` should be overridden by the settings in BowPlugin, so `LaunchAngle` settings in ProjectileTweaks will have no effect if BowPlugin is installed.
 
 ### Compatible Mods
-**BowsBeforeHoes (by Azumatt)**: Fully compatiable and BowsBeforeHoes is recommended if you want a quiver for your arrows, a zoom feature while aiming, and the option to recover arrows after firing them.
+**BowsBeforeHoes (by Azumatt)**: Fully compatible and BowsBeforeHoes is recommended if you want a quiver for your arrows, a zoom feature while aiming, and the option to recover arrows after firing them.
 
 ## Donations/Tips
  My mods will always be free to use but if you feel like saying thanks you can tip/donate.
@@ -131,7 +131,9 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
 Github: https://github.com/searica/ProjectileTweaks
 
 ### Contributions
-If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on the [Jotunn discord](https://discord.gg/DdUt6g7gyA) or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax).
+If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on my discord [Searica's Mods](https://discord.gg/sFmGTBYN6n).
+<!--the [Jotunn discord](https://discord.gg/DdUt6g7gyA), or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax)-->
+
 
  I'm a grad student and have a lot of personal responsibilities on top of that so I can't promise I will always respond quickly, but I do intend to maintain the mod in my free time.
 
