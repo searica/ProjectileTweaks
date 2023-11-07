@@ -3,6 +3,7 @@
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Jotunn.Utils;
 using Jotunn.Entities;
 using Jotunn.Managers;
 using System.Reflection;
@@ -11,6 +12,7 @@ namespace ProjectileTweaks
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
+    [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
     internal class ProjectileTweaks : BaseUnityPlugin
     {
         internal const string Author = "Searica";
