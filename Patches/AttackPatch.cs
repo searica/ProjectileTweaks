@@ -71,6 +71,33 @@ namespace ProjectileTweaks.Patches
                 };
                 __instance.m_launchAngle = Config.XbowLaunchAngle.Value;
             }
+            else if (skillType == Skills.SkillType.Spears)
+            {
+                // Velocity
+                Config.SpearVelocityMult.SettingChanged += delegate
+                {
+                    __instance.m_projectileVel *= Config.SpearVelocityMult.Value;
+                    __instance.m_projectileVelMin *= Config.SpearVelocityMult.Value;
+                };
+                __instance.m_projectileVel *= Config.SpearVelocityMult.Value;
+                __instance.m_projectileVelMin *= Config.SpearVelocityMult.Value;
+
+                // Spread
+                Config.SpearSpreadMult.SettingChanged += delegate
+                {
+                    __instance.m_projectileAccuracy *= Config.SpearSpreadMult.Value;
+                    __instance.m_projectileAccuracyMin *= Config.SpearSpreadMult.Value;
+                };
+                __instance.m_projectileAccuracy *= Config.SpearSpreadMult.Value;
+                __instance.m_projectileAccuracyMin *= Config.SpearSpreadMult.Value;
+
+                // Launch angle
+                Config.SpearLaunchAngle.SettingChanged += delegate
+                {
+                    __instance.m_launchAngle = Config.SpearLaunchAngle.Value;
+                };
+                __instance.m_launchAngle = Config.SpearLaunchAngle.Value;
+            }
             else if (skillType == Skills.SkillType.ElementalMagic)
             {
                 // Velocity
@@ -83,7 +110,7 @@ namespace ProjectileTweaks.Patches
                 __instance.m_projectileVelMin *= Config.StaffVelocityMult.Value;
 
                 // Spread
-                Config.XbowSpreadMult.SettingChanged += delegate
+                Config.StaffSpreadMult.SettingChanged += delegate
                 {
                     __instance.m_projectileAccuracy *= Config.StaffSpreadMult.Value;
                     __instance.m_projectileAccuracyMin *= Config.StaffSpreadMult.Value;
@@ -122,6 +149,13 @@ namespace ProjectileTweaks.Patches
                 horizontalOffset *= Config.XbowHorizontalOffset.Value;
                 spawnPoint += horizontalOffset;
                 spawnPoint += new Vector3(0.0f, Config.XbowVerticalOffset.Value, 0.0f);
+            }
+            else if (skillType == Skills.SkillType.Spears)
+            {
+                var horizontalOffset = new Vector3(aimDir.z, 0, -aimDir.x).normalized;
+                horizontalOffset *= Config.SpearHorizontalOffset.Value;
+                spawnPoint += horizontalOffset;
+                spawnPoint += new Vector3(0.0f, Config.SpearVerticalOffset.Value, 0.0f);
             }
             else if (skillType == Skills.SkillType.ElementalMagic)
             {

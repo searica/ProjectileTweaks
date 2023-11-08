@@ -1,13 +1,8 @@
 ﻿// Ignore Spelling: Jotunn
 
 using BepInEx;
-using BepInEx.Bootstrap;
 using BepInEx.Configuration;
-using Jotunn.Managers;
-using System;
-
 using System.IO;
-using System.Reflection;
 
 namespace ProjectileTweaks.Configs
 {
@@ -40,6 +35,7 @@ namespace ProjectileTweaks.Configs
 
         private const string BowSection = "BowTweaks";
         private const string XbowSection = "CrossbowTweaks";
+        private const string SpearSection = "SpearTweaks";
         private const string StaffSection = "StaffTweaks";
 
         internal static ConfigEntry<float> BowSpreadMult { get; set; }
@@ -54,6 +50,12 @@ namespace ProjectileTweaks.Configs
         internal static ConfigEntry<float> XbowVerticalOffset { get; set; }
         internal static ConfigEntry<float> XbowHorizontalOffset { get; set; }
 
+        internal static ConfigEntry<float> SpearSpreadMult { get; set; }
+        internal static ConfigEntry<float> SpearVelocityMult { get; set; }
+        internal static ConfigEntry<float> SpearLaunchAngle { get; set; }
+        internal static ConfigEntry<float> SpearVerticalOffset { get; set; }
+        internal static ConfigEntry<float> SpearHorizontalOffset { get; set; }
+
         internal static ConfigEntry<float> StaffSpreadMult { get; set; }
         internal static ConfigEntry<float> StaffVelocityMult { get; set; }
         internal static ConfigEntry<float> StaffLaunchAngle { get; set; }
@@ -62,7 +64,6 @@ namespace ProjectileTweaks.Configs
 
         internal static ConfigEntry<LoggerLevel> Verbosity { get; private set; }
 
-        private static readonly AcceptableValueList<bool> AcceptableBoolValuesList = new(new bool[] { false, true });
         private const char ZWS = '\u200B';
 
         internal static ConfigEntry<T> BindConfig<T>(
@@ -197,6 +198,43 @@ namespace ProjectileTweaks.Configs
                 "VerticalOffset",
                 0,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
+                new AcceptableValueRange<float>(-0.5f, 0.5f)
+            );
+
+            // Spears
+            SpearSpreadMult = BindConfig<float>(
+                SpearSection,
+                new string(ZWS, 3) + "SpreadMultiplier",
+                1,
+                "Multiplies the min and max projectile spread, so if you set it to zero your spear throws will have zero spread.",
+                new AcceptableValueRange<float>(0, 2)
+            );
+            SpearVelocityMult = BindConfig<float>(
+                SpearSection,
+                new string(ZWS, 2) + "VelocityMultiplier",
+                1,
+                "Multiplies velocity of thrown spears.",
+                new AcceptableValueRange<float>(0.1f, 2)
+            );
+            SpearLaunchAngle = BindConfig<float>(
+                SpearSection,
+                "LaunchAngle",
+                -1,
+                "Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.",
+                new AcceptableValueRange<float>(-5, 5)
+            );
+            SpearHorizontalOffset = BindConfig<float>(
+                SpearSection,
+                "HorizontalOffset",
+                0.1f,
+                "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
+                new AcceptableValueRange<float>(-0.5f, 0.5f)
+            );
+            SpearVerticalOffset = BindConfig<float>(
+                SpearSection,
+                "VerticalOffset",
+                0.5f,
+                "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f)
             );
 
