@@ -6,16 +6,16 @@ A lightweight gameplay mod that lets you customize how firing projectiles works.
 ## Description
 ProjectileTweaks is intended to be a lightweight and open-source mod that provides an alternative to BetterArchery and BowPlugin. Some of ProjectileTweaks features also overlap with MagicPlugin but the two are fully compatible so you can still enjoy the extra features from MagicPlugin.
 
-Tweaks are applied separately for bows, crossbows, and staffs.
+Tweaks are applied separately for bows, crossbows, spears, and staffs.
 
-### Bows & Crossbows
-For bows and crossbows you can customize:
+### Bows, Crossbows, & Spears
+For bows, crossbows, and Spears you can customize:
 - Spread of the projectiles (this is referred to as accuracy in BowPlugin)
 - Velocity of projectiles
 - Launch angle of arrows and bolts
-- Position that arrows and bolts spawn relative to the player when they are fired by changing the horizontal and vertical offsets
+- Position that projectiles spawn relative to the player when they are fired by changing the horizontal and vertical offsets
 
-The default configuration adjusts bows to launch arrows at the same angle as crossbows. The spawn location of arrows is also tweaked to improve the alignment of arrow trajectory with the aiming crosshairs, so arrows fired with zero spread launch in alignment with the crosshair rather than being slightly offset towards the players left side.
+The default configuration adjusts bows and spears to launch projectiles at the same angle as crossbows. The spawn locations of arrows and spears are also tweaked to improve the alignment of arrow trajectory with the aiming crosshairs, so that arrows and spears fired with zero spread launch in alignment with the crosshair rather than being slightly offset towards the players left side.
 
 ### Staffs
 For staffs you can customize:
@@ -27,11 +27,6 @@ The default configuration adjusts the spawn position of projectiles fired from s
 
 ## Configuration
 A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created after running the game once with this mod. You can adjust the config values by editing this file using a text editor or in-game using the Configuration Manager. The mod has a built-in file watcher so either method will work and changes will be reflected in-game as you change the settings.
-
-**CraftingStation** [Synced with Server]
-- A string defining the crafting station required to built the prefab.
-  - Acceptable values: None, Workbench, Forge, Stonecutter, Cauldron, ArtisanTable, BlackForge, GaldrTable
-  - Default value: None
 
 ### Bow Settings
 **SpreadMultiplier** [Synced with Server]
@@ -85,6 +80,32 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 - Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
     - AcceptableValueRange: (-0.5, 0.5)
     - Default value: 0.0
+
+### Spear Settings
+**SpreadMultiplier** [Synced with Server]
+- Multiplies the min and max projectile spread, so if you set it to zero your spear throws will have zero spread.
+    - AcceptableValueRange: (0, 2)
+    - Default value: 1
+
+**VelocityMultiplier** [Synced with Server]
+- Multiplies velocity of bolts.
+    - AcceptableValueRange: (0.1, 2)
+    - Default value: 1
+
+**LaunchAngle** [Synced with Server]
+- Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.
+    - AcceptableValueRange: (-5, 5)
+    - Default value: -1
+
+**HorizontalOffset** [Synced with Server]
+- Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
+    - AcceptableValueRange: (-0.5, 0.5)
+    - Default value: 0.1
+
+**VerticalOffset** [Synced with Server]
+- Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.
+    - AcceptableValueRange: (-0.5, 0.5)
+    - Default value: 0.5
 
 
 ### Staff Settings
