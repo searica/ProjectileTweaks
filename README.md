@@ -138,7 +138,7 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
 ### Partial Incompatibility
 **MagicPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles launched from staffs work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultiper` set to 1 in the configuration for ProjectileTweaks.
 
-**BowPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles fired from bows and crossbows work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultipier` set to 1 in the configuration for both Bows and Crossbows. I have also set up ProjectileTweaks so that the settings for `LaunchAngle` should be overridden by the settings in BowPlugin, so `LaunchAngle` settings in ProjectileTweaks will have no effect if BowPlugin is installed.
+**BowPlugin (by Blacks7ar)**: ProjectileTweaks and BowPlugin can be used together without issue but both mods allow adjusting how projectiles fired from bows and crossbows work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultipier` set to 1 in the configuration for both Bows and Crossbows. I have also set up ProjectileTweaks so that the settings for `LaunchAngle` should be overridden by the settings in BowPlugin, so `LaunchAngle` settings in ProjectileTweaks will have no effect if BowPlugin is installed.
 
 ### Compatible Mods
 **BowsBeforeHoes (by Azumatt)**: Fully compatible and BowsBeforeHoes is recommended if you want a quiver for your arrows, a zoom feature while aiming, and the option to recover arrows after firing them.
