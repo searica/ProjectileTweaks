@@ -5,6 +5,15 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.0.3</td>
+			<td align="left">
+				<ul>
+					<li>Updated manifest website link</li>
+					<li>New icon</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.1/1.0.2</td>
 			<td align="left">
 				<ul>

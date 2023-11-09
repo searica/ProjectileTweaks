@@ -168,8 +168,9 @@ If you like this mod you might like some of my other ones.
 #### Building Mods
 - [MoreVanillaBuildPrefabs](https://valheim.thunderstore.io/package/Searica/More_Vanilla_Build_Prefabs/)
 - [Extra Snap Points Made Easy](https://valheim.thunderstore.io/package/Searica/Extra_Snap_Points_Made_Easy/)
+- [BuildRestrictionTweaksSync](https://valheim.thunderstore.io/package/Searica/BuildRestrictionTweaksSync/)
 
 #### Gameplay Mods
 - [FortifySkillsRedux](https://valheim.thunderstore.io/package/Searica/FortifySkillsRedux/)
 - [DodgeShortcut](https://valheim.thunderstore.io/package/Searica/DodgeShortcut/)
-<!--- [ProjectileTweaks](https://github.com/searica/ProjectileTweaks)-->
+- [SkilledCarryWeight](https://valheim.thunderstore.io/package/Searica/SkilledCarryWeight/)
