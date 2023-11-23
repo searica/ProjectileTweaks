@@ -144,17 +144,19 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
 **BowsBeforeHoes (by Azumatt)**: Fully compatible and BowsBeforeHoes is recommended if you want a quiver for your arrows, a zoom feature while aiming, and the option to recover arrows after firing them.
 
 ## Donations/Tips
- My mods will always be free to use but if you feel like saying thanks you can tip/donate.
+My mods will always be free to use but if you feel like saying thanks you can tip/donate.
 
-  [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/searica)
+| My Ko-fi: | [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/searica) |
+|-----------|---------------|
 
 ## Source Code
-Github: https://github.com/searica/ProjectileTweaks
+Source code is available on Github.
+
+| Github Repository: | <button style="font-size:20px"><img height="18" src="https://github.githubassets.com/favicons/favicon-dark.svg"></img><a href="https://github.com/searica/ProjectileTweaks"> ProjectileTweaks</button> |
+|-----------|---------------|
 
 ### Contributions
 If you would like to provide suggestions, make feature requests, or reports bugs and compatibility issues you can either open an issue on the Github repository or tag me (@searica) with a message on my discord [Searica's Mods](https://discord.gg/sFmGTBYN6n).
-<!--the [Jotunn discord](https://discord.gg/DdUt6g7gyA), or the [Odin Plus discord](https://discord.gg/mbkPcvu9ax)-->
-
 
  I'm a grad student and have a lot of personal responsibilities on top of that so I can't promise I will always respond quickly, but I do intend to maintain the mod in my free time.
 
@@ -166,11 +168,13 @@ This mod was inspired by BetterArchery and BowPlugin. Also a huge shout-out and 
 If you like this mod you might like some of my other ones.
 
 #### Building Mods
-- [MoreVanillaBuildPrefabs](https://valheim.thunderstore.io/package/Searica/More_Vanilla_Build_Prefabs/)
+- [More Vanilla Build Prefabs](https://valheim.thunderstore.io/package/Searica/More_Vanilla_Build_Prefabs/)
 - [Extra Snap Points Made Easy](https://valheim.thunderstore.io/package/Searica/Extra_Snap_Points_Made_Easy/)
 - [BuildRestrictionTweaksSync](https://valheim.thunderstore.io/package/Searica/BuildRestrictionTweaksSync/)
 
 #### Gameplay Mods
-- [FortifySkillsRedux](https://valheim.thunderstore.io/package/Searica/FortifySkillsRedux/)
+- [CameraTweaks](https://valheim.thunderstore.io/package/Searica/CameraTweaks/)
 - [DodgeShortcut](https://valheim.thunderstore.io/package/Searica/DodgeShortcut/)
-- [SkilledCarryWeight](https://valheim.thunderstore.io/package/Searica/SkilledCarryWeight/)
+- [FortifySkillsRedux](https://valheim.thunderstore.io/package/Searica/FortifySkillsRedux/)
+- [SkilledCarryWeight](https://github.com/searica/SkilledCarryWeight/)
+- [SafetyStatus](https://valheim.thunderstore.io/package/Searica/SafetyStatus/)

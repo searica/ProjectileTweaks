@@ -5,6 +5,15 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.1.0</td>
+			<td align="left">
+				<ul>
+					<li>Performance optimizations.</li>
+					<li>Config changed save to disk when in-game manager is closed.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.0.3</td>
 			<td align="left">
 				<ul>
