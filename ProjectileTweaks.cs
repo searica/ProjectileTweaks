@@ -7,6 +7,8 @@ using HarmonyLib;
 using Jotunn.Utils;
 using UnityEngine;
 using ProjectileTweaks.Configs;
+using System;
+using Jotunn.Managers;
 
 namespace ProjectileTweaks
 {
@@ -30,29 +32,33 @@ namespace ProjectileTweaks
         private const string SpearSection = "SpearTweaks";
         private const string StaffSection = "StaffTweaks";
 
-        internal static ConfigEntry<float> BowSpreadMult { get; set; }
-        internal static ConfigEntry<float> BowVelocityMult { get; set; }
-        internal static ConfigEntry<float> BowLaunchAngle { get; set; }
-        internal static ConfigEntry<float> BowVerticalOffset { get; set; }
-        internal static ConfigEntry<float> BowHorizontalOffset { get; set; }
+        private static bool ShouldSaveConfig = false;
 
-        internal static ConfigEntry<float> XbowSpreadMult { get; set; }
-        internal static ConfigEntry<float> XbowVelocityMult { get; set; }
-        internal static ConfigEntry<float> XbowLaunchAngle { get; set; }
-        internal static ConfigEntry<float> XbowVerticalOffset { get; set; }
-        internal static ConfigEntry<float> XbowHorizontalOffset { get; set; }
+        internal static ConfigEntry<float> BowSpreadMult { get; private set; }
+        internal static ConfigEntry<float> BowVelocityMult { get; private set; }
+        internal static ConfigEntry<float> BowLaunchAngle { get; private set; }
+        internal static ConfigEntry<float> BowVerticalOffset { get; private set; }
+        internal static ConfigEntry<float> BowHorizontalOffset { get; private set; }
+        internal static ConfigEntry<float> BowDrawSpeed { get; private set; }
 
-        internal static ConfigEntry<float> SpearSpreadMult { get; set; }
-        internal static ConfigEntry<float> SpearVelocityMult { get; set; }
-        internal static ConfigEntry<float> SpearLaunchAngle { get; set; }
-        internal static ConfigEntry<float> SpearVerticalOffset { get; set; }
-        internal static ConfigEntry<float> SpearHorizontalOffset { get; set; }
+        internal static ConfigEntry<float> XbowSpreadMult { get; private set; }
+        internal static ConfigEntry<float> XbowVelocityMult { get; private set; }
+        internal static ConfigEntry<float> XbowLaunchAngle { get; private set; }
+        internal static ConfigEntry<float> XbowVerticalOffset { get; private set; }
+        internal static ConfigEntry<float> XbowHorizontalOffset { get; private set; }
+        internal static ConfigEntry<float> XBowReloadSpeed { get; private set; }
 
-        internal static ConfigEntry<float> StaffSpreadMult { get; set; }
-        internal static ConfigEntry<float> StaffVelocityMult { get; set; }
-        internal static ConfigEntry<float> StaffLaunchAngle { get; set; }
-        internal static ConfigEntry<float> StaffVerticalOffset { get; set; }
-        internal static ConfigEntry<float> StaffHorizontalOffset { get; set; }
+        internal static ConfigEntry<float> SpearSpreadMult { get; private set; }
+        internal static ConfigEntry<float> SpearVelocityMult { get; private set; }
+        internal static ConfigEntry<float> SpearLaunchAngle { get; private set; }
+        internal static ConfigEntry<float> SpearVerticalOffset { get; private set; }
+        internal static ConfigEntry<float> SpearHorizontalOffset { get; private set; }
+
+        internal static ConfigEntry<float> StaffSpreadMult { get; private set; }
+        internal static ConfigEntry<float> StaffVelocityMult { get; private set; }
+        internal static ConfigEntry<float> StaffLaunchAngle { get; private set; }
+        internal static ConfigEntry<float> StaffVerticalOffset { get; private set; }
+        internal static ConfigEntry<float> StaffHorizontalOffset { get; private set; }
 
 
         /// <summary>
@@ -66,12 +72,21 @@ namespace ProjectileTweaks
             Initialize();
             ConfigManager.Save();
 
-
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), harmonyInstanceId: PluginGUID);
 
             Game.isModded = true;
 
             ConfigManager.SetupWatcher();
+
+            SynchronizationManager.OnConfigurationWindowClosed += () =>
+            {
+                UpdateConfigFile();
+            };
+
+            SynchronizationManager.OnConfigurationSynchronized += (sender, e) =>
+            {
+                UpdateConfigFile();
+            };
         }
 
         /// <summary>
@@ -91,30 +106,48 @@ namespace ProjectileTweaks
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero your arrows will have zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
+            BowSpreadMult.SettingChanged += UpdateSettings;
+
             BowVelocityMult = ConfigManager.BindConfig(
                 BowSection,
                 ConfigManager.SetStringPriority("VelocityMultiplier", 2),
                 1f,
                 "Multiplies velocity of arrows.",
                 new AcceptableValueRange<float>(0.1f, 2f));
+            BowVelocityMult.SettingChanged += UpdateSettings;
+
             BowLaunchAngle = ConfigManager.BindConfig(
                 BowSection,
                 ConfigManager.SetStringPriority("LaunchAngle", 1),
                 -1f,
                 "Changes the launch angle for arrows. Vanilla default for bows is 0. Negative values angle upwards, and positive values angle downwards.",
                 new AcceptableValueRange<float>(-5f, 5f));
-            BowHorizontalOffset = ConfigManager.BindConfig<float>(
+            BowLaunchAngle.SettingChanged += UpdateSettings;
+
+            BowHorizontalOffset = ConfigManager.BindConfig(
                 BowSection,
                 "HorizontalOffset",
                 0.2f,
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
-            BowVerticalOffset = ConfigManager.BindConfig<float>(
+            BowHorizontalOffset.SettingChanged += UpdateSettings;
+
+            BowVerticalOffset = ConfigManager.BindConfig(
                 BowSection,
                 "VerticalOffset",
                 0.2f,
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            BowVerticalOffset.SettingChanged += UpdateSettings;
+
+            BowDrawSpeed = ConfigManager.BindConfig(
+                BowSection,
+                "DrawSpeedMultiplier",
+                1f,
+                "Multiplier for draw speed of bows. Does not affect Vanilla scaling with skill level.",
+                new AcceptableValueRange<float>(0.5f, 2f)
+            );
+            BowDrawSpeed.SettingChanged += UpdateSettings;
 
             // Crossbows
             XbowSpreadMult = ConfigManager.BindConfig(
@@ -123,30 +156,48 @@ namespace ProjectileTweaks
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero your bolts will have zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
+            XbowSpreadMult.SettingChanged += UpdateSettings;
+
             XbowVelocityMult = ConfigManager.BindConfig(
                 XbowSection,
                 ConfigManager.SetStringPriority("VelocityMultiplier", 2),
                 1f,
                 "Multiplies velocity of bolts.",
                 new AcceptableValueRange<float>(0.1f, 2f));
+            XbowVelocityMult.SettingChanged += UpdateSettings;
+
             XbowLaunchAngle = ConfigManager.BindConfig(
                 XbowSection,
                 ConfigManager.SetStringPriority("LaunchAngle", 1),
                 -1f,
                 "Changes the launch angle for bolts. Vanilla default for crossbows is -1. Negative values angle upwards, and positive values angle downwards.",
                 new AcceptableValueRange<float>(-5f, 5f));
+            XbowLaunchAngle.SettingChanged += UpdateSettings;
+
             XbowHorizontalOffset = ConfigManager.BindConfig(
                 XbowSection,
                 "HorizontalOffset",
                 0f,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            XbowHorizontalOffset.SettingChanged += UpdateSettings;
+
             XbowVerticalOffset = ConfigManager.BindConfig(
                 XbowSection,
                 "VerticalOffset",
                 0f,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            XbowVerticalOffset.SettingChanged += UpdateSettings;
+
+            XBowReloadSpeed = ConfigManager.BindConfig(
+                XbowSection,
+                "ReloadSpeedMultiplier",
+                1f,
+                "Multiplier for reload speed of crossbows. Does not affect Vanilla scaling with skill level.",
+                new AcceptableValueRange<float>(0.5f, 2f)
+            );
+            XBowReloadSpeed.SettingChanged += UpdateSettings;
 
             // Spears
             SpearSpreadMult = ConfigManager.BindConfig(
@@ -155,30 +206,39 @@ namespace ProjectileTweaks
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero your spear throws will have zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
+            SpearSpreadMult.SettingChanged += UpdateSettings;
+
             SpearVelocityMult = ConfigManager.BindConfig(
                 SpearSection,
                 ConfigManager.SetStringPriority("VelocityMultiplier", 2),
                 1f,
                 "Multiplies velocity of thrown spears.",
                 new AcceptableValueRange<float>(0.1f, 2f));
+            SpearVelocityMult.SettingChanged += UpdateSettings;
+
             SpearLaunchAngle = ConfigManager.BindConfig(
                 SpearSection,
                 "LaunchAngle",
                 -1f,
                 "Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.",
                 new AcceptableValueRange<float>(-5f, 5f));
+            SpearLaunchAngle.SettingChanged += UpdateSettings;
+
             SpearHorizontalOffset = ConfigManager.BindConfig(
                 SpearSection,
                 "HorizontalOffset",
                 0.1f,
                 "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            SpearHorizontalOffset.SettingChanged += UpdateSettings;
+
             SpearVerticalOffset = ConfigManager.BindConfig(
                 SpearSection,
                 "VerticalOffset",
                 0.5f,
                 "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            SpearVelocityMult.SettingChanged += UpdateSettings;
 
             // Staffs
             StaffSpreadMult = ConfigManager.BindConfig(
@@ -187,24 +247,45 @@ namespace ProjectileTweaks
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero there will be zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
+            StaffSpreadMult.SettingChanged += UpdateSettings;
+
             StaffVelocityMult = ConfigManager.BindConfig(
                 StaffSection,
                 ConfigManager.SetStringPriority("VelocityMultiplier", 2),
                 1f,
                 "Multiplies velocity of projectiles.",
                 new AcceptableValueRange<float>(0.1f, 2f));
+            StaffVelocityMult.SettingChanged += UpdateSettings;
+
             StaffHorizontalOffset = ConfigManager.BindConfig(
                 StaffSection,
                 "HorizontalOffset",
                 0f,
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            StaffHorizontalOffset.SettingChanged += UpdateSettings;
+
             StaffVerticalOffset = ConfigManager.BindConfig(
                 StaffSection,
                 "VerticalOffset",
                 0.3f,
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
+            StaffVerticalOffset.SettingChanged += UpdateSettings;
+        }
+
+        private static void UpdateConfigFile()
+        {
+            if (ShouldSaveConfig)
+            {
+                ConfigManager.Save();
+                ShouldSaveConfig = false;
+            }
+        }
+
+        private static void UpdateSettings(object obj, EventArgs e)
+        {
+            ShouldSaveConfig |= !ShouldSaveConfig;
         }
     }
 }
@@ -236,7 +317,7 @@ internal static class Log
 
     #region Verbosity
 
-    internal static ConfigEntry<LogLevel> Verbosity { get; set; }
+    internal static ConfigEntry<LogLevel> Verbosity { get; private set; }
     internal static LogLevel VerbosityLevel => Verbosity.Value;
     internal static bool IsVerbosityLow => Verbosity.Value >= LogLevel.Low;
     internal static bool IsVerbosityMedium => Verbosity.Value >= LogLevel.Medium;
