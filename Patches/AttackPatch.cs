@@ -7,6 +7,11 @@ namespace ProjectileTweaks.Patches
     [HarmonyPatch(typeof(Attack))]
     internal static class AttackPatch
     {
+        private static float m_projectileVel;
+        private static float m_projectileVelMin;
+        private static float m_projectileAccuracy;
+        private static float m_projectileAccuracyMin;
+
         [HarmonyPostfix]
         [HarmonyBefore("blacks7ar.BowPlugin")]
         [HarmonyPriority(Priority.VeryHigh)]
@@ -44,22 +49,31 @@ namespace ProjectileTweaks.Patches
 
         private static void SetVelocity(Attack attack, ConfigEntry<float> velocityMultiplier)
         {
+            // store values for use with delegate
+            m_projectileVel = attack.m_projectileVel;
+            m_projectileVelMin = attack.m_projectileVelMin;
+
             velocityMultiplier.SettingChanged += (sender, e) =>
             {
-                attack.m_projectileVel *= velocityMultiplier.Value;
-                attack.m_projectileVelMin *= velocityMultiplier.Value;
+                attack.m_projectileVel = m_projectileVel * velocityMultiplier.Value;
+                attack.m_projectileVelMin = m_projectileVelMin * velocityMultiplier.Value;
             };
+
             attack.m_projectileVel *= velocityMultiplier.Value;
             attack.m_projectileVelMin *= velocityMultiplier.Value;
         }
 
         private static void SetSpread(Attack attack, ConfigEntry<float> spreadConfig)
         {
+            m_projectileAccuracy = attack.m_projectileAccuracy;
+            m_projectileAccuracyMin = attack.m_projectileAccuracyMin;
+
             spreadConfig.SettingChanged += (sender, e) =>
             {
-                attack.m_projectileAccuracy *= spreadConfig.Value;
-                attack.m_projectileAccuracyMin *= spreadConfig.Value;
+                attack.m_projectileAccuracy = m_projectileAccuracy * spreadConfig.Value;
+                attack.m_projectileAccuracyMin = m_projectileAccuracyMin * spreadConfig.Value;
             };
+
             attack.m_projectileAccuracy *= spreadConfig.Value;
             attack.m_projectileAccuracyMin *= spreadConfig.Value;
         }
@@ -68,9 +82,10 @@ namespace ProjectileTweaks.Patches
         {
             angleConfig.SettingChanged += (sender, e) =>
             {
-                attack.m_launchAngle *= angleConfig.Value;
+                attack.m_launchAngle = angleConfig.Value;
             };
-            attack.m_launchAngle *= angleConfig.Value;
+
+            attack.m_launchAngle = angleConfig.Value;
         }
 
         [HarmonyPostfix]
