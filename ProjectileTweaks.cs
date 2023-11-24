@@ -117,7 +117,6 @@ namespace ProjectileTweaks
         private void Initialize()
         {
             // Bows
-
             BowDrawSpeed = ConfigManager.BindConfig(
                 BowSection,
                 ConfigManager.SetStringPriority("Draw Speed Multiplier", 4),
@@ -166,8 +165,6 @@ namespace ProjectileTweaks
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
             BowVerticalOffset.SettingChanged += UpdateSettings;
-
-
 
             // Crossbows
             XBowReloadSpeed = ConfigManager.BindConfig(
@@ -328,7 +325,7 @@ namespace ProjectileTweaks
                 ZoomSection,
                 "Time to Zoom in.",
                 1f,
-                "Constant time while zooming. '1' is default and recommended.",
+                "Time that it takes to zoom in all the way. '1' is default and recommended.",
                 new AcceptableValueRange<float>(0.2f, 2f),
                 synced: false);
             TimeToZoomIn.SettingChanged += UpdateSettings;
@@ -337,7 +334,7 @@ namespace ProjectileTweaks
                 ZoomSection,
                 "Stay In-Zoom Time.",
                 2f,
-                "Set the maximum time the camera will stay zooming in while holding the zoom key after firing a projectile.",
+                "Set the maximum time the camera will stay zoomed in while holding the zoom key after firing a projectile.",
                 new AcceptableValueRange<float>(0.5f, 4f),
                 synced: false);
             StayInZoomTime.SettingChanged += UpdateSettings;
@@ -346,7 +343,7 @@ namespace ProjectileTweaks
                 ZoomSection,
                 "Zoom Factor",
                 2f,
-                "How much to zoom in by.",
+                "Set how much too zoom in relative to current camera view.",
                 new AcceptableValueRange<float>(1f, 4f),
                 synced: false);
             ZoomFactor.SettingChanged += UpdateSettings;
