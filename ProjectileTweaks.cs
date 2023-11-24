@@ -62,7 +62,9 @@ namespace ProjectileTweaks
         internal static ConfigEntry<float> StaffVerticalOffset { get; private set; }
         internal static ConfigEntry<float> StaffHorizontalOffset { get; private set; }
 
-        internal static ConfigEntry<bool> EnableZoom { get; private set; }
+        internal static ConfigEntry<bool> EnableBowZoom { get; private set; }
+
+        internal static ConfigEntry<bool> EnableXbowZoom { get; private set; }
         internal static ConfigEntry<KeyCode> ZoomKey { get; private set; }
         internal static ConfigEntry<KeyCode> CancelDrawKey { get; private set; }
         internal static ConfigEntry<float> StayInZoomTime { get; private set; }
@@ -70,6 +72,11 @@ namespace ProjectileTweaks
         internal static ConfigEntry<float> ZoomFactor { get; private set; }
 
         internal static ConfigEntry<bool> AutoBowZoom { get; private set; }
+
+        /// <summary>
+        ///     Bool indicating if zooming is enabled for bow || crossbow
+        /// </summary>
+        internal static bool IsZoomEnabled => EnableBowZoom.Value || EnableXbowZoom.Value;
 
         /// <summary>
         ///     Called by Unity
@@ -284,12 +291,19 @@ namespace ProjectileTweaks
             StaffVerticalOffset.SettingChanged += UpdateSettings;
 
             // Zoom section
-            EnableZoom = ConfigManager.BindConfig(
+            EnableBowZoom = ConfigManager.BindConfig(
                 ZoomSection,
-                ConfigManager.SetStringPriority("Enable Zoom", 1),
+                ConfigManager.SetStringPriority("Bow Zoom", 1),
                 true,
-                "Set to true/enabled to allow zooming while using the bow or crossbow.");
-            EnableZoom.SettingChanged += UpdateSettings;
+                "Set to true/enabled to allow zooming while using a bow.");
+            EnableBowZoom.SettingChanged += UpdateSettings;
+
+            EnableXbowZoom = ConfigManager.BindConfig(
+                ZoomSection,
+                ConfigManager.SetStringPriority("Crossbow Zoom", 1),
+                true,
+                "Set to true/enabled to allow zooming while using a crossbow.");
+            EnableXbowZoom.SettingChanged += UpdateSettings;
 
             ZoomKey = ConfigManager.BindConfig(
                 ZoomSection,
