@@ -8,8 +8,13 @@
 			<td align="center">1.1.0</td>
 			<td align="left">
 				<ul>
+					<b>Features</b>
+					<li>Added a zoom feature when using bows and crossbows. (works with CameraTweaks changing the FoV.</li>
+					<li>Added option to modify bow draw speed.</li>
+					<li>Added option to modify crossbow reload speed.</li>
+					<b>Backend</b>
 					<li>Performance optimizations.</li>
-					<li>Config changed save to disk when in-game manager is closed.</li>
+					<li>Configuration changes immediately save to disk when in-game configuration manager is closed.</li>
 				</ul>
 			</td>
 		</tr>
