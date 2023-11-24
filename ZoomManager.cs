@@ -37,7 +37,7 @@ namespace ProjectileTweaks
         [HarmonyPriority(0)]
         public static void UpdateCameraPrefix(GameCamera __instance)
         {
-            if (ProjectileTweaks.EnableZoom.Value && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn))
+            if (ProjectileTweaks.IsZoomEnabled && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn))
             {
                 __instance.m_fov = NewZoomFov;
             }
@@ -47,7 +47,7 @@ namespace ProjectileTweaks
         [HarmonyPatch(typeof(Player), nameof(Player.SetControls))]
         private static void SetControlsPrefix(Player __instance, ref bool attackHold, ref bool blockHold)
         {
-            if (!ProjectileTweaks.EnableZoom.Value)
+            if (!ProjectileTweaks.IsZoomEnabled)
             {
                 return;
             }
@@ -77,7 +77,7 @@ namespace ProjectileTweaks
         private static void GetCameraPositionPostfix(GameCamera __instance)
         {
             if (__instance != null &&
-                ProjectileTweaks.EnableZoom.Value &&
+                ProjectileTweaks.IsZoomEnabled &&
                 CurrentZoomState == ZoomState.Fixed &&
                 Mathf.Abs(__instance.m_fov - BaseFov) > DiffTol)
             {
@@ -91,7 +91,7 @@ namespace ProjectileTweaks
         [HarmonyPriority(0)]
         private static void UpdateCrosshairPostfix(Player player, float bowDrawPercentage)
         {
-            if (!ProjectileTweaks.EnableZoom.Value || BaseFov == 0.0f)
+            if (!ProjectileTweaks.IsZoomEnabled || BaseFov == 0.0f)
             {
                 return;
             }
@@ -102,9 +102,11 @@ namespace ProjectileTweaks
                 return;
             }
 
-            bool isKeyPressed = ProjectileTweaks.AutoBowZoom.Value || Input.GetKey(ProjectileTweaks.ZoomKey.Value);
-            bool isBowDrawn = bowDrawPercentage > PercTol;
-            if (isKeyPressed && (isBowDrawn || player.IsWeaponLoaded()))
+            bool isKeyPressed = Input.GetKey(ProjectileTweaks.ZoomKey.Value);
+            bool shouldZoomBow = (isKeyPressed || ProjectileTweaks.AutoBowZoom.Value) && bowDrawPercentage > PercTol;
+            bool shouldZoomXbow = isKeyPressed && player.IsWeaponLoaded();
+
+            if (shouldZoomBow || shouldZoomXbow)
             {
                 ZoomIn();
             }
@@ -151,7 +153,8 @@ namespace ProjectileTweaks
                     }
                 }
                 float t = Mathf.InverseLerp(0f, 0.3f, ZoomOutTimer);
-                GameCamera.instance.m_fov = NewZoomFov = Mathf.Lerp(LastZoomFov, BaseFov, t);
+                NewZoomFov = Mathf.Lerp(LastZoomFov, BaseFov, t);
+                GameCamera.instance.m_fov = NewZoomFov;
             }
             else if (Mathf.Abs(GameCamera.instance.m_fov - BaseFov) >= DiffTol)
             {
@@ -168,13 +171,20 @@ namespace ProjectileTweaks
             }
         }
 
+        /// <summary>
+        ///     Check if current when is zoomable and zoom for that weapon is enabled.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         internal static bool HasZoomableItem(Player player)
         {
             var leftItem = player.GetCurrentWeapon();
             if (leftItem != null)
             {
                 var itemSkill = leftItem.m_shared.m_skillType;
-                return itemSkill == Skills.SkillType.Bows || itemSkill == Skills.SkillType.Crossbows;
+                bool isZoomableBow = ProjectileTweaks.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
+                bool isZoomableXbow = ProjectileTweaks.EnableXbowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
+                return isZoomableBow || isZoomableXbow;
             }
 
             return false;
