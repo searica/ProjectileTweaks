@@ -9,6 +9,7 @@ using UnityEngine;
 using ProjectileTweaks.Configs;
 using System;
 using Jotunn.Managers;
+using Fishlabs.Valheim;
 
 namespace ProjectileTweaks
 {
@@ -20,7 +21,7 @@ namespace ProjectileTweaks
         public const string Author = "Searica";
         public const string PluginName = "ProjectileTweaks";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.0.3";
+        public const string PluginVersion = "1.1.0";
 
         // Use this class to add your own localization to the game
         // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
@@ -31,6 +32,7 @@ namespace ProjectileTweaks
         private const string XbowSection = "CrossbowTweaks";
         private const string SpearSection = "SpearTweaks";
         private const string StaffSection = "StaffTweaks";
+        private const string ZoomSection = "Zoom";
 
         private static bool ShouldSaveConfig = false;
 
@@ -60,6 +62,14 @@ namespace ProjectileTweaks
         internal static ConfigEntry<float> StaffVerticalOffset { get; private set; }
         internal static ConfigEntry<float> StaffHorizontalOffset { get; private set; }
 
+        internal static ConfigEntry<bool> EnableZoom { get; private set; }
+        internal static ConfigEntry<KeyCode> ZoomKey { get; private set; }
+        internal static ConfigEntry<KeyCode> CancelDrawKey { get; private set; }
+        internal static ConfigEntry<float> StayInZoomTime { get; private set; }
+        internal static ConfigEntry<float> TimeToZoomIn { get; private set; }
+        internal static ConfigEntry<float> ZoomFactor { get; private set; }
+
+        internal static ConfigEntry<bool> AutoBowZoom { get; private set; }
 
         /// <summary>
         ///     Called by Unity
@@ -272,6 +282,65 @@ namespace ProjectileTweaks
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
             StaffVerticalOffset.SettingChanged += UpdateSettings;
+
+            // Zoom section
+            EnableZoom = ConfigManager.BindConfig(
+                ZoomSection,
+                ConfigManager.SetStringPriority("Enable Zoom", 1),
+                true,
+                "Set to true/enabled to allow zooming while using the bow or crossbow.");
+            EnableZoom.SettingChanged += UpdateSettings;
+
+            ZoomKey = ConfigManager.BindConfig(
+                ZoomSection,
+                "ZoomHotKey",
+                KeyCode.Mouse1,
+                "Set the key used to zoom in while using a bow or crossbow.",
+                synced: false);
+            ZoomKey.SettingChanged += UpdateSettings;
+
+            CancelDrawKey = ConfigManager.BindConfig(
+                ZoomSection,
+                "CancelDrawKey",
+                KeyCode.E,
+                "Set the key used to cancel drawing your bow.",
+                synced: false);
+            CancelDrawKey.SettingChanged += UpdateSettings;
+
+            TimeToZoomIn = ConfigManager.BindConfig(
+                ZoomSection,
+                "Time to Zoom in.",
+                1f,
+                "Constant time while zooming. '1' is default and recommended.",
+                new AcceptableValueRange<float>(0.2f, 2f),
+                synced: false);
+            TimeToZoomIn.SettingChanged += UpdateSettings;
+
+            StayInZoomTime = ConfigManager.BindConfig(
+                ZoomSection,
+                "Stay In-Zoom Time.",
+                2f,
+                "Set the maximum time the camera will stay zooming in while holding the zoom key after firing a projectile.",
+                new AcceptableValueRange<float>(0.5f, 4f),
+                synced: false);
+            StayInZoomTime.SettingChanged += UpdateSettings;
+
+            ZoomFactor = ConfigManager.BindConfig(
+                ZoomSection,
+                "Zoom Factor",
+                2f,
+                "How much to zoom in by.",
+                new AcceptableValueRange<float>(1f, 4f),
+                synced: false);
+            ZoomFactor.SettingChanged += UpdateSettings;
+
+            AutoBowZoom = ConfigManager.BindConfig(
+                ZoomSection,
+                "Auto Bow Zoom",
+                false,
+                "Set to true/enabled to make bows automatically zoom in as they are drawn.",
+                synced: false);
+            AutoBowZoom.SettingChanged += UpdateSettings;
         }
 
         private static void UpdateConfigFile()
