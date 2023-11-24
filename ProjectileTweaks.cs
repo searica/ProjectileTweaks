@@ -117,9 +117,19 @@ namespace ProjectileTweaks
         private void Initialize()
         {
             // Bows
+
+            BowDrawSpeed = ConfigManager.BindConfig(
+                BowSection,
+                ConfigManager.SetStringPriority("Draw Speed Multiplier", 4),
+                1f,
+                "Multiplier for draw speed of bows. Does not affect Vanilla scaling with skill level.",
+                new AcceptableValueRange<float>(0.5f, 2f)
+            );
+            BowDrawSpeed.SettingChanged += UpdateSettings;
+
             BowSpreadMult = ConfigManager.BindConfig(
                 BowSection,
-                ConfigManager.SetStringPriority("SpreadMultiplier", 3),
+                ConfigManager.SetStringPriority("Spread Multiplier", 3),
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero your arrows will have zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
@@ -127,7 +137,7 @@ namespace ProjectileTweaks
 
             BowVelocityMult = ConfigManager.BindConfig(
                 BowSection,
-                ConfigManager.SetStringPriority("VelocityMultiplier", 2),
+                ConfigManager.SetStringPriority("Velocity Multiplier", 2),
                 1f,
                 "Multiplies velocity of arrows.",
                 new AcceptableValueRange<float>(0.1f, 2f));
@@ -135,7 +145,7 @@ namespace ProjectileTweaks
 
             BowLaunchAngle = ConfigManager.BindConfig(
                 BowSection,
-                ConfigManager.SetStringPriority("LaunchAngle", 1),
+                ConfigManager.SetStringPriority("Launch Angle", 1),
                 -1f,
                 "Changes the launch angle for arrows. Vanilla default for bows is 0. Negative values angle upwards, and positive values angle downwards.",
                 new AcceptableValueRange<float>(-5f, 5f));
@@ -143,7 +153,7 @@ namespace ProjectileTweaks
 
             BowHorizontalOffset = ConfigManager.BindConfig(
                 BowSection,
-                "HorizontalOffset",
+                "Horizontal Offset",
                 0.2f,
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
@@ -151,25 +161,27 @@ namespace ProjectileTweaks
 
             BowVerticalOffset = ConfigManager.BindConfig(
                 BowSection,
-                "VerticalOffset",
+                "Vertical Offset",
                 0.2f,
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
             BowVerticalOffset.SettingChanged += UpdateSettings;
 
-            BowDrawSpeed = ConfigManager.BindConfig(
-                BowSection,
-                "DrawSpeedMultiplier",
-                1f,
-                "Multiplier for draw speed of bows. Does not affect Vanilla scaling with skill level.",
-                new AcceptableValueRange<float>(0.5f, 2f)
-            );
-            BowDrawSpeed.SettingChanged += UpdateSettings;
+
 
             // Crossbows
+            XBowReloadSpeed = ConfigManager.BindConfig(
+                XbowSection,
+                ConfigManager.SetStringPriority("Reload Speed Multiplier", 4),
+                1f,
+                "Multiplier for reload speed of crossbows. Does not affect Vanilla scaling with skill level.",
+                new AcceptableValueRange<float>(0.5f, 2f)
+            );
+            XBowReloadSpeed.SettingChanged += UpdateSettings;
+
             XbowSpreadMult = ConfigManager.BindConfig(
                 XbowSection,
-                ConfigManager.SetStringPriority("SpreadMultiplier", 3),
+                ConfigManager.SetStringPriority("Spread Multiplier", 3),
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero your bolts will have zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
@@ -177,7 +189,7 @@ namespace ProjectileTweaks
 
             XbowVelocityMult = ConfigManager.BindConfig(
                 XbowSection,
-                ConfigManager.SetStringPriority("VelocityMultiplier", 2),
+                ConfigManager.SetStringPriority("Velocity Multiplier", 2),
                 1f,
                 "Multiplies velocity of bolts.",
                 new AcceptableValueRange<float>(0.1f, 2f));
@@ -185,7 +197,7 @@ namespace ProjectileTweaks
 
             XbowLaunchAngle = ConfigManager.BindConfig(
                 XbowSection,
-                ConfigManager.SetStringPriority("LaunchAngle", 1),
+                ConfigManager.SetStringPriority("Launch Angle", 1),
                 -1f,
                 "Changes the launch angle for bolts. Vanilla default for crossbows is -1. Negative values angle upwards, and positive values angle downwards.",
                 new AcceptableValueRange<float>(-5f, 5f));
@@ -193,7 +205,7 @@ namespace ProjectileTweaks
 
             XbowHorizontalOffset = ConfigManager.BindConfig(
                 XbowSection,
-                "HorizontalOffset",
+                "Horizontal Offset",
                 0f,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
@@ -201,25 +213,16 @@ namespace ProjectileTweaks
 
             XbowVerticalOffset = ConfigManager.BindConfig(
                 XbowSection,
-                "VerticalOffset",
+                "Vertical Offset",
                 0f,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
             XbowVerticalOffset.SettingChanged += UpdateSettings;
 
-            XBowReloadSpeed = ConfigManager.BindConfig(
-                XbowSection,
-                "ReloadSpeedMultiplier",
-                1f,
-                "Multiplier for reload speed of crossbows. Does not affect Vanilla scaling with skill level.",
-                new AcceptableValueRange<float>(0.5f, 2f)
-            );
-            XBowReloadSpeed.SettingChanged += UpdateSettings;
-
             // Spears
             SpearSpreadMult = ConfigManager.BindConfig(
                 SpearSection,
-                ConfigManager.SetStringPriority("SpreadMultiplier", 3),
+                ConfigManager.SetStringPriority("Spread Multiplier", 3),
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero your spear throws will have zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
@@ -227,7 +230,7 @@ namespace ProjectileTweaks
 
             SpearVelocityMult = ConfigManager.BindConfig(
                 SpearSection,
-                ConfigManager.SetStringPriority("VelocityMultiplier", 2),
+                ConfigManager.SetStringPriority("Velocity Multiplier", 2),
                 1f,
                 "Multiplies velocity of thrown spears.",
                 new AcceptableValueRange<float>(0.1f, 2f));
@@ -235,7 +238,7 @@ namespace ProjectileTweaks
 
             SpearLaunchAngle = ConfigManager.BindConfig(
                 SpearSection,
-                "LaunchAngle",
+                "Launch Angle",
                 -1f,
                 "Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.",
                 new AcceptableValueRange<float>(-5f, 5f));
@@ -243,7 +246,7 @@ namespace ProjectileTweaks
 
             SpearHorizontalOffset = ConfigManager.BindConfig(
                 SpearSection,
-                "HorizontalOffset",
+                "Horizontal Offset",
                 0.1f,
                 "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
@@ -251,7 +254,7 @@ namespace ProjectileTweaks
 
             SpearVerticalOffset = ConfigManager.BindConfig(
                 SpearSection,
-                "VerticalOffset",
+                "Vertical Offset",
                 0.5f,
                 "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
@@ -260,7 +263,7 @@ namespace ProjectileTweaks
             // Staffs
             StaffSpreadMult = ConfigManager.BindConfig(
                 StaffSection,
-                ConfigManager.SetStringPriority("SpreadMultiplier", 3),
+                ConfigManager.SetStringPriority("Spread Multiplier", 3),
                 1f,
                 "Multiplies the min and max projectile spread, so if you set it to zero there will be zero spread.",
                 new AcceptableValueRange<float>(0f, 2f));
@@ -268,7 +271,7 @@ namespace ProjectileTweaks
 
             StaffVelocityMult = ConfigManager.BindConfig(
                 StaffSection,
-                ConfigManager.SetStringPriority("VelocityMultiplier", 2),
+                ConfigManager.SetStringPriority("Velocity Multiplier", 2),
                 1f,
                 "Multiplies velocity of projectiles.",
                 new AcceptableValueRange<float>(0.1f, 2f));
@@ -276,7 +279,7 @@ namespace ProjectileTweaks
 
             StaffHorizontalOffset = ConfigManager.BindConfig(
                 StaffSection,
-                "HorizontalOffset",
+                "Horizontal Offset",
                 0f,
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
@@ -284,7 +287,7 @@ namespace ProjectileTweaks
 
             StaffVerticalOffset = ConfigManager.BindConfig(
                 StaffSection,
-                "VerticalOffset",
+                "Vertical Offset",
                 0.3f,
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                 new AcceptableValueRange<float>(-0.5f, 0.5f));
@@ -293,21 +296,21 @@ namespace ProjectileTweaks
             // Zoom section
             EnableBowZoom = ConfigManager.BindConfig(
                 ZoomSection,
-                ConfigManager.SetStringPriority("Bow Zoom", 1),
+                ConfigManager.SetStringPriority("Bow Zoom", 3),
                 true,
                 "Set to true/enabled to allow zooming while using a bow.");
             EnableBowZoom.SettingChanged += UpdateSettings;
 
             EnableXbowZoom = ConfigManager.BindConfig(
                 ZoomSection,
-                ConfigManager.SetStringPriority("Crossbow Zoom", 1),
+                ConfigManager.SetStringPriority("Crossbow Zoom", 3),
                 true,
                 "Set to true/enabled to allow zooming while using a crossbow.");
             EnableXbowZoom.SettingChanged += UpdateSettings;
 
             ZoomKey = ConfigManager.BindConfig(
                 ZoomSection,
-                "ZoomHotKey",
+                ConfigManager.SetStringPriority("Zoom Key", 2),
                 KeyCode.Mouse1,
                 "Set the key used to zoom in while using a bow or crossbow.",
                 synced: false);
@@ -315,7 +318,7 @@ namespace ProjectileTweaks
 
             CancelDrawKey = ConfigManager.BindConfig(
                 ZoomSection,
-                "CancelDrawKey",
+                ConfigManager.SetStringPriority("Cancel Draw Key", 1),
                 KeyCode.E,
                 "Set the key used to cancel drawing your bow.",
                 synced: false);
