@@ -102,9 +102,9 @@ namespace ProjectileTweaks
                 return;
             }
 
-            bool isKeyPressed = Input.GetKey(ProjectileTweaks.ZoomKey.Value);
-
-            if ((ProjectileTweaks.AutoBowZoom.Value && bowDrawPercentage > PercTol) || (isKeyPressed && bowDrawPercentage > PercTol))
+            bool isKeyPressed = ProjectileTweaks.AutoBowZoom.Value || Input.GetKey(ProjectileTweaks.ZoomKey.Value);
+            bool isBowDrawn = bowDrawPercentage > PercTol;
+            if (isKeyPressed && (isBowDrawn || player.IsWeaponLoaded()))
             {
                 ZoomIn();
             }
@@ -176,6 +176,7 @@ namespace ProjectileTweaks
                 var itemSkill = leftItem.m_shared.m_skillType;
                 return itemSkill == Skills.SkillType.Bows || itemSkill == Skills.SkillType.Crossbows;
             }
+
             return false;
         }
     }
