@@ -28,106 +28,405 @@ The default configuration adjusts the spawn position of projectiles fired from s
 ## Configuration
 A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created after running the game once with this mod. You can adjust the config values by editing this file using a text editor or in-game using the Configuration Manager. The mod has a built-in file watcher so either method will work and changes will be reflected in-game as you change the settings.
 
-### Bow Settings
-**SpreadMultiplier** [Synced with Server]
-- Multiplies the min and max projectile spread, so if you set it to zero your arrows will have zero spread.
-    - AcceptableValueRange: (0, 2)
-    - Default value: 1
+<div class="header">
+	<h3>Bow Section</h3>
+  These settings control features relating to bows.
+</div>
+<table>
+	<tbody>
+		<tr>
+			<th align="center">Setting</th>
+            <th align="center">Server&nbspSync</th>
+			<th align="center">Description</th>
+		</tr>
+		<tr>
+			<td align="center"><b>Draw Speed Multiplier</b></td>
+            <td align="center">Yes</td>
+			<td align="left">
+                Multiplier for draw speed of bows. Does not affect Vanilla scaling with skill level.
+				<ul>
+					<li>Acceptable values: (0.5, 2)</li>
+					<li>Default value: 1</li>
+				</ul>
+			</td>
+		</tr>
+        <tr>
+            <td align="center"><b>Spread Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies the min and max projectile spread, so if you set it to zero your arrows will have zero spread.
+                <ul>
+                    <li>Acceptable values: (0, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Velocity Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies velocity of arrows.
+                <ul>
+                    <li>Acceptable values: (0.1, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Launch Angle</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Changes the launch angle for arrows. Vanilla default for bows is 0. Negative values angle upwards, and positive values angle downwards.
+                <ul>
+                    <li>Acceptable values: (-5, 5)</li>
+                    <li>Default value: -1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Horizontal Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that arrows are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.2</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Vertical Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.2</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-**VelocityMultiplier** [Synced with Server]
-- Multiplies velocity of arrows.
-    - AcceptableValueRange: (0.1, 2)
-    - Default value: 1
+<div class="header">
+	<h3>Crossbow Section</h3>
+  These settings control features relating to crossbows.
+</div>
+<table>
+	<tbody>
+		<tr>
+			<th align="center">Setting</th>
+            <th align="center">Server&nbspSync</th>
+			<th align="center">Description</th>
+		</tr>
+		<tr>
+			<td align="center"><b>Reload Speed Multiplier</b></td>
+            <td align="center">Yes</td>
+			<td align="left">
+                Multiplier for reload speed of crossbows. Does not affect Vanilla scaling with skill level.
+				<ul>
+					<li>Acceptable values: (0.5, 2)</li>
+					<li>Default value: 1</li>
+				</ul>
+			</td>
+		</tr>
+        <tr>
+            <td align="center"><b>Spread Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies the min and max projectile spread, so if you set it to zero your bolts will have zero spread.
+                <ul>
+                    <li>Acceptable values: (0, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Velocity Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies velocity of bolts.
+                <ul>
+                    <li>Acceptable values: (0.1, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Launch Angle</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Changes the launch angle for bolts. Vanilla default for crossbows is -1. Negative values angle upwards, and positive values angle downwards.
+                <ul>
+                    <li>Acceptable values: (-5, 5)</li>
+                    <li>Default value: -1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Horizontal Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that bolts are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Vertical Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.0</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-**LaunchAngle** [Synced with Server]
-- Changes the launch angle for arrows. Vanilla default for bows is 0. Negative values angle upwards, and positive values angle downwards.
-    - AcceptableValueRange: (-5, 5)
-    - Default value: -1
+<div class="header">
+	<h3>Spears Section</h3>
+  These settings control features relating to spears.
+</div>
+<table>
+	<tbody>
+		<tr>
+			<th align="center">Setting</th>
+            <th align="center">Server&nbspSync</th>
+			<th align="center">Description</th>
+		</tr>
+        <tr>
+            <td align="center"><b>Spread Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies the min and max projectile spread, so if you set it to zero your spear throws will have zero spread.
+                <ul>
+                    <li>Acceptable values: (0, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Velocity Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies velocity of thrown spears.
+                <ul>
+                    <li>Acceptable values: (0.1, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Launch Angle</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.
+                <ul>
+                    <li>Acceptable values: (-5, 5)</li>
+                    <li>Default value: -1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Horizontal Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Vertical Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.5</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-**HorizontalOffset** [Synced with Server]
-- Offsets the location that arrows are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.2
+<div class="header">
+	<h3>Staffs Section</h3>
+  These settings control features relating to staffs.
+</div>
+<table>
+	<tbody>
+		<tr>
+			<th align="center">Setting</th>
+            <th align="center">Server&nbspSync</th>
+			<th align="center">Description</th>
+		</tr>
+        <tr>
+            <td align="center"><b>Spread Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies the min and max projectile spread, so if you set it to zero there will be zero spread.
+                <ul>
+                    <li>Acceptable values: (0, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Velocity Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies velocity of projectiles.
+                <ul>
+                    <li>Acceptable values: (0.1, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Launch Angle</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.
+                <ul>
+                    <li>Acceptable values: (-5, 5)</li>
+                    <li>Default value: -1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Horizontal Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that projectiles are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Vertical Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
+                <ul>
+                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Default value: 0.3</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-**VerticalOffset** [Synced with Server]
-- Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.2
-
-
-### Crossbow Settings
-**SpreadMultiplier** [Synced with Server]
-- Multiplies the min and max projectile spread, so if you set it to zero your bolts will have zero spread.
-    - AcceptableValueRange: (0, 2)
-    - Default value: 1
-
-**VelocityMultiplier** [Synced with Server]
-- Multiplies velocity of bolts.
-    - AcceptableValueRange: (0.1, 2)
-    - Default value: 1
-
-**LaunchAngle** [Synced with Server]
-- Changes the launch angle for bolts. Vanilla default for crossbows is -1. Negative values angle upwards, and positive values angle downwards.
-    - AcceptableValueRange: (-5, 5)
-    - Default value: -1
-
-**HorizontalOffset** [Synced with Server]
-- Offsets the location that bolts are launched from when firing them.Positive shifts it to your characters right. Negative shifts it to your characters left.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.0
-
-**VerticalOffset** [Synced with Server]
-- Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.0
-
-### Spear Settings
-**SpreadMultiplier** [Synced with Server]
-- Multiplies the min and max projectile spread, so if you set it to zero your spear throws will have zero spread.
-    - AcceptableValueRange: (0, 2)
-    - Default value: 1
-
-**VelocityMultiplier** [Synced with Server]
-- Multiplies velocity of bolts.
-    - AcceptableValueRange: (0.1, 2)
-    - Default value: 1
-
-**LaunchAngle** [Synced with Server]
-- Changes the launch angle for thrown spears. Vanilla default for spears is 0. Negative values angle upwards, and positive values angle downwards.
-    - AcceptableValueRange: (-5, 5)
-    - Default value: -1
-
-**HorizontalOffset** [Synced with Server]
-- Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.1
-
-**VerticalOffset** [Synced with Server]
-- Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.5
-
-
-### Staff Settings
-**SpreadMultiplier** [Synced with Server]
-- Multiplies the min and max projectile spread, so if you set it to zero your projectiles will have zero spread.
-    - AcceptableValueRange: (0, 2)
-    - Default value: 1
-
-**VelocityMultiplier** [Synced with Server]
-- Multiplies velocity of projectiles.
-    - AcceptableValueRange: (0.1, 2)
-    - Default value: 1
-
-**HorizontalOffset** [Synced with Server]
-- Offsets the location that projectiles are launched from when firing them.Positive shifts it to your characters right. Negative shifts it to your characters left.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.0
-
-**VerticalOffset** [Synced with Server]
-- Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
-    - AcceptableValueRange: (-0.5, 0.5)
-    - Default value: 0.3
+<div class="header">
+	<h3>Zoom Section</h3>
+  These settings control features relating to zooming in while aiming.
+</div>
+<table>
+	<tbody>
+		<tr>
+			<th align="center">Setting</th>
+            <th align="center">Server&nbspSync</th>
+			<th align="center">Description</th>
+		</tr>
+        <tr>
+            <td align="center"><b>Bow Zoom</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Set to true/enabled to allow zooming while using a bow.
+                <ul>
+                    <li>Acceptable values: false, true</li>
+                    <li>Default value: true</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Crossbow Zoom</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Set to true/enabled to allow zooming while using a crossbow.
+                <ul>
+                    <li>Acceptable values: false, true</li>
+                    <li>Default value: true</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Zoom Key</b></td>
+            <td align="center">No</td>
+            <td align="left">
+                Set the key used to zoom in while using a bow or crossbow.
+                <ul>
+                    <li>Acceptable values: KeyCode</li>
+                    <li>Default value: RightClick</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Cancel Draw Key</b></td>
+            <td align="center">No</td>
+            <td align="left">
+                Set the key used to cancel drawing your bow.
+                <ul>
+                    <li>Acceptable values: KeyCode</li>
+                    <li>Default value: E</li>
+                </ul>
+            </td>
+        </tr>
+         <tr>
+            <td align="center"><b>Auto Bow Zoom</b></td>
+            <td align="center">No</td>
+            <td align="left">
+                Set to true/enabled to make bows automatically zoom in as they are drawn.
+                <ul>
+                    <li>Acceptable values: false, true</li>
+                    <li>Default value: false</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Time to Zoom in</b></td>
+            <td align="center">No</td>
+            <td align="left">
+                Time that it takes to zoom in all the way. '1' is default and recommended.
+                <ul>
+                    <li>Acceptable values: (0.2, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Stay In-Zoom Time</b></td>
+            <td align="center">No</td>
+            <td align="left">
+                Set the maximum time the camera will stay zoomed in while holding the zoom key after firing a projectile.
+                <ul>
+                    <li>Acceptable values: (0.5, 4)</li>
+                    <li>Default value: 2</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Zoom Factor</b></td>
+            <td align="center">No</td>
+            <td align="left">
+                Set how much to zoom in relative to current camera view.
+                <ul>
+                    <li>Acceptable values: (1, 4)</li>
+                    <li>Default value: 2</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ## Compatibility
 These are non-exhaustive lists, feel free to let me know if you want a mod added to any of the lists.
@@ -135,13 +434,13 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
 ### Incompatible Mods
 **BetterArchery (by ishid4)**: BetterArchery touches a lot of the same game code and the features it provides can be replaced using a combination of ProjectileTweaks and BowsBeforeHoes so I won't be supporting any incompatibly or unexpected behavior that occurs if you use ProjectileTweaks alongside BetterArchery.
 
-### Partial Incompatibility
+### Compatible Mods
+**BowsBeforeHoes (by Azumatt)**: Fully compatible and BowsBeforeHoes is recommended if you want a quiver for your arrows, and the option to recover arrows after firing them. As both mods offer zoom features it is recommended you only enable the zoom feature from one mod.
+
 **MagicPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles launched from staffs work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultiper` set to 1 in the configuration for ProjectileTweaks.
 
 **BowPlugin (by Blacks7ar)**: ProjectileTweaks and BowPlugin can be used together without issue but both mods allow adjusting how projectiles fired from bows and crossbows work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultipier` set to 1 in the configuration for both Bows and Crossbows. I have also set up ProjectileTweaks so that the settings for `LaunchAngle` should be overridden by the settings in BowPlugin, so `LaunchAngle` settings in ProjectileTweaks will have no effect if BowPlugin is installed.
 
-### Compatible Mods
-**BowsBeforeHoes (by Azumatt)**: Fully compatible and BowsBeforeHoes is recommended if you want a quiver for your arrows, a zoom feature while aiming, and the option to recover arrows after firing them.
 
 ## Donations/Tips
 My mods will always be free to use but if you feel like saying thanks you can tip/donate.
