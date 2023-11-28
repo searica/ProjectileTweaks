@@ -9,7 +9,6 @@ using UnityEngine;
 using ProjectileTweaks.Configs;
 using System;
 using Jotunn.Managers;
-using Fishlabs.Valheim;
 
 namespace ProjectileTweaks {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
