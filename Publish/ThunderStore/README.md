@@ -451,7 +451,7 @@ My mods will always be free to use but if you feel like saying thanks you can ti
 ## Source Code
 Source code is available on Github.
 
-| Github Repository: | <button style="font-size:20px"><img height="18" src="https://github.githubassets.com/favicons/favicon-dark.svg"></img><a href="https://github.com/searica/ProjectileTweaks"> ProjectileTweaks</button> |
+| Github Repository: | <img height="18" src="https://github.githubassets.com/favicons/favicon-dark.svg"></img><a href="https://github.com/searica/ProjectileTweaks"> ProjectileTweaks</a> |
 |-----------|---------------|
 
 ### Contributions
@@ -469,7 +469,9 @@ If you like this mod you might like some of my other ones.
 #### Building Mods
 - [More Vanilla Build Prefabs](https://valheim.thunderstore.io/package/Searica/More_Vanilla_Build_Prefabs/)
 - [Extra Snap Points Made Easy](https://valheim.thunderstore.io/package/Searica/Extra_Snap_Points_Made_Easy/)
+- [AdvancedTerrainModifiers](https://valheim.thunderstore.io/package/Searica/AdvancedTerrainModifiers/)
 - [BuildRestrictionTweaksSync](https://valheim.thunderstore.io/package/Searica/BuildRestrictionTweaksSync/)
+- [ToolTweaks](https://valheim.thunderstore.io/package/Searica/ToolTweaks/)
 
 #### Gameplay Mods
 - [CameraTweaks](https://valheim.thunderstore.io/package/Searica/CameraTweaks/)
