@@ -18,7 +18,7 @@ namespace ProjectileTweaks {
         public const string Author = "Searica";
         public const string PluginName = "ProjectileTweaks";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.1.1";
+        public const string PluginVersion = "1.2.0";
 
         // Use this class to add your own localization to the game
         // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
@@ -408,91 +408,93 @@ namespace ProjectileTweaks {
             ShouldSaveConfig |= !ShouldSaveConfig;
         }
     }
-}
 
-/// <summary>
-///     Log level to control output to BepInEx log
-/// </summary>
-internal enum LogLevel {
-    Low = 0,
-    Medium = 1,
-    High = 2,
-}
-
-/// <summary>
-///     Helper class for properly logging from static contexts.
-/// </summary>
-internal static class Log {
-    private const BindingFlags AllBindings =
-           BindingFlags.Public
-           | BindingFlags.NonPublic
-           | BindingFlags.Instance
-           | BindingFlags.Static
-           | BindingFlags.GetField
-           | BindingFlags.SetField
-           | BindingFlags.GetProperty
-           | BindingFlags.SetProperty;
-
-    #region Verbosity
-
-    internal static ConfigEntry<LogLevel> Verbosity { get; private set; }
-    internal static LogLevel VerbosityLevel => Verbosity.Value;
-    internal static bool IsVerbosityLow => Verbosity.Value >= LogLevel.Low;
-    internal static bool IsVerbosityMedium => Verbosity.Value >= LogLevel.Medium;
-    internal static bool IsVerbosityHigh => Verbosity.Value >= LogLevel.High;
-
-    #endregion Verbosity
-
-    private static ManualLogSource logSource;
-
-    internal static void Init(ManualLogSource logSource) {
-        Log.logSource = logSource;
+    /// <summary>
+    ///     Log level to control output to BepInEx log
+    /// </summary>
+    internal enum LogLevel {
+        Low = 0,
+        Medium = 1,
+        High = 2,
     }
 
-    internal static void LogDebug(object data) => logSource.LogDebug(data);
+    /// <summary>
+    ///     Helper class for properly logging from static contexts.
+    /// </summary>
+    internal static class Log {
+        private const BindingFlags AllBindings =
+               BindingFlags.Public
+               | BindingFlags.NonPublic
+               | BindingFlags.Instance
+               | BindingFlags.Static
+               | BindingFlags.GetField
+               | BindingFlags.SetField
+               | BindingFlags.GetProperty
+               | BindingFlags.SetProperty;
 
-    internal static void LogError(object data) => logSource.LogError(data);
+        #region Verbosity
 
-    internal static void LogFatal(object data) => logSource.LogFatal(data);
+        internal static ConfigEntry<LogLevel> Verbosity { get; private set; }
+        internal static LogLevel VerbosityLevel => Verbosity.Value;
+        internal static bool IsVerbosityLow => Verbosity.Value >= LogLevel.Low;
+        internal static bool IsVerbosityMedium => Verbosity.Value >= LogLevel.Medium;
+        internal static bool IsVerbosityHigh => Verbosity.Value >= LogLevel.High;
 
-    internal static void LogMessage(object data) => logSource.LogMessage(data);
+        #endregion Verbosity
 
-    internal static void LogWarning(object data) => logSource.LogWarning(data);
+        private static ManualLogSource logSource;
 
-    internal static void LogInfo(object data, LogLevel level = LogLevel.Low) {
-        if (Verbosity is null || VerbosityLevel >= level) {
-            logSource.LogInfo(data);
+        internal static void Init(ManualLogSource logSource) {
+            Log.logSource = logSource;
         }
-    }
 
-    internal static void LogGameObject(GameObject prefab, bool includeChildren = false) {
-        LogInfo("***** " + prefab.name + " *****");
-        foreach (Component compo in prefab.GetComponents<Component>()) {
-            LogComponent(compo);
+        internal static void LogDebug(object data) => logSource.LogDebug(data);
+
+        internal static void LogError(object data) => logSource.LogError(data);
+
+        internal static void LogFatal(object data) => logSource.LogFatal(data);
+
+        internal static void LogMessage(object data) => logSource.LogMessage(data);
+
+        internal static void LogWarning(object data) => logSource.LogWarning(data);
+
+        internal static void LogInfo(object data, LogLevel level = LogLevel.Low) {
+            if (Verbosity is null || VerbosityLevel >= level) {
+                logSource.LogInfo(data);
+            }
         }
 
-        if (!includeChildren) { return; }
-
-        LogInfo("***** " + prefab.name + " (children) *****");
-        foreach (Transform child in prefab.transform) {
-            LogInfo($" - {child.gameObject.name}");
-            foreach (Component compo in child.gameObject.GetComponents<Component>()) {
+        internal static void LogGameObject(GameObject prefab, bool includeChildren = false) {
+            LogInfo("***** " + prefab.name + " *****");
+            foreach (Component compo in prefab.GetComponents<Component>()) {
                 LogComponent(compo);
+            }
+
+            if (!includeChildren) { return; }
+
+            LogInfo("***** " + prefab.name + " (children) *****");
+            foreach (Transform child in prefab.transform) {
+                LogInfo($" - {child.gameObject.name}");
+                foreach (Component compo in child.gameObject.GetComponents<Component>()) {
+                    LogComponent(compo);
+                }
+            }
+        }
+
+        internal static void LogComponent(Component compo) {
+            LogInfo($"--- {compo.GetType().Name}: {compo.name} ---");
+
+            PropertyInfo[] properties = compo.GetType().GetProperties(AllBindings);
+            foreach (var property in properties) {
+                LogInfo($" - {property.Name} = {property.GetValue(compo)}");
+            }
+
+            FieldInfo[] fields = compo.GetType().GetFields(AllBindings);
+            foreach (var field in fields) {
+                LogInfo($" - {field.Name} = {field.GetValue(compo)}");
             }
         }
     }
-
-    internal static void LogComponent(Component compo) {
-        LogInfo($"--- {compo.GetType().Name}: {compo.name} ---");
-
-        PropertyInfo[] properties = compo.GetType().GetProperties(AllBindings);
-        foreach (var property in properties) {
-            LogInfo($" - {property.Name} = {property.GetValue(compo)}");
-        }
-
-        FieldInfo[] fields = compo.GetType().GetFields(AllBindings);
-        foreach (var field in fields) {
-            LogInfo($" - {field.Name} = {field.GetValue(compo)}");
-        }
-    }
 }
+
+
