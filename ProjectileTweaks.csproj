@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<NuGetPackages>$(UserProfile)\.nuget\packages</NuGetPackages>
-		<JotunnProps>$(NuGetPackages)\jotunnlib\2.14.6\build\JotunnLib.props</JotunnProps>
+		<JotunnProps>$(NuGetPackages)\jotunnlib\2.15.2\build\JotunnLib.props</JotunnProps>
 	</PropertyGroup>
 
 	<!--<Import Project="environment.props" Condition="Exists('environment.props')" />-->
-	<Import Project="$(JotunnProps)" Condition="Exists('$(JotunnProps)')" />
+	<!--<Import Project="$(JotunnProps)" Condition="Exists('$(JotunnProps)')" />-->
 	<Import Project="ModPackageTool.targets" Condition="Exists('ModPackageTool.targets')" />
 
 	<PropertyGroup>
-		<TargetFramework>net462</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<!--<LangVersion>latest</LangVersion>-->
@@ -56,16 +56,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="HarmonyX" Version="2.9.0" />
-		<PackageReference Include="JotunnLib" Version="2.15.0" />
+		<PackageReference Include="JotunnLib" Version="2.15.2" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Mono.Cecil" Version="0.11.4" />
 		<PackageReference Include="MonoMod" Version="21.9.19.1" />
 		<PackageReference Include="MonoMod.RuntimeDetour" Version="22.1.29.1" />
 		<PackageReference Include="MonoMod.Utils" Version="22.1.29.1" />
-		<!-- <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference> -->
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
 	<ItemGroup>
@@ -83,9 +79,9 @@
 		<Error Condition="!Exists('$(JotunnProps)')" Text="$([System.String]::Format('$(ErrorText)', '$(JotunnProps)'))" />
 	</Target>
 	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\Users\TheUser\Documents\Projects\ValheimMods\ProjectileTweaks\.editorconfig" />
+		<EditorConfigFiles Remove="C:\Users\TheUser\Documents\Projects\ValheimMods\ProjectileTweaks\.editorconfig" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Include="C:\Users\TheUser\Documents\Projects\ValheimMods\ProjectileTweaks\.editorconfig" />
+		<None Include="C:\Users\TheUser\Documents\Projects\ValheimMods\ProjectileTweaks\.editorconfig" />
 	</ItemGroup>
 </Project>
