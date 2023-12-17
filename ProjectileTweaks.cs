@@ -25,6 +25,7 @@ namespace ProjectileTweaks {
         //private static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
 
 
+        private const string BombSection = "BombTweaks";
         private const string BowSection = "BowTweaks";
         private const string XbowSection = "CrossbowTweaks";
         private const string SpearSection = "SpearTweaks";
@@ -39,6 +40,12 @@ namespace ProjectileTweaks {
         internal static ConfigEntry<float> BowVerticalOffset { get; private set; }
         internal static ConfigEntry<float> BowHorizontalOffset { get; private set; }
         internal static ConfigEntry<float> BowDrawSpeed { get; private set; }
+
+        internal static ConfigEntry<float> BombSpreadMult { get; private set; }
+        internal static ConfigEntry<float> BombVelocityMult { get; private set; }
+        internal static ConfigEntry<float> BombLaunchAngle { get; private set; }
+        internal static ConfigEntry<float> BombVerticalOffset { get; private set; }
+        internal static ConfigEntry<float> BombHorizontalOffset { get; private set; }
 
         internal static ConfigEntry<float> XbowSpreadMult { get; private set; }
         internal static ConfigEntry<float> XbowVelocityMult { get; private set; }
@@ -147,7 +154,7 @@ namespace ProjectileTweaks {
                 "Horizontal Offset",
                 0.2f,
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             BowHorizontalOffset.SettingChanged += UpdateSettings;
 
             BowVerticalOffset = ConfigManager.BindConfig(
@@ -155,8 +162,49 @@ namespace ProjectileTweaks {
                 "Vertical Offset",
                 0.2f,
                 "Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             BowVerticalOffset.SettingChanged += UpdateSettings;
+
+            // Bombs
+            BombSpreadMult = ConfigManager.BindConfig(
+                BombSection,
+                ConfigManager.SetStringPriority("Spread Multiplier", 3),
+                1f,
+                "Multiplies the min and max projectile spread, so if you set it to zero your bombs will have zero spread.",
+                new AcceptableValueRange<float>(0f, 2f));
+            BombSpreadMult.SettingChanged += UpdateSettings;
+
+            BombVelocityMult = ConfigManager.BindConfig(
+                BombSection,
+                ConfigManager.SetStringPriority("Velocity Multiplier", 2),
+                1f,
+                "Multiplies velocity of bombs.",
+                new AcceptableValueRange<float>(0.1f, 2f));
+            BombVelocityMult.SettingChanged += UpdateSettings;
+
+            BombLaunchAngle = ConfigManager.BindConfig(
+                BombSection,
+                ConfigManager.SetStringPriority("Launch Angle", 1),
+                -1f,
+                "Changes the launch angle for bombs. Vanilla default for bombs is 0. Negative values angle upwards, and positive values angle downwards.",
+                new AcceptableValueRange<float>(-5f, 5f));
+            BombLaunchAngle.SettingChanged += UpdateSettings;
+
+            BombHorizontalOffset = ConfigManager.BindConfig(
+                BombSection,
+                "Horizontal Offset",
+                0.0f,
+                "Offsets the location that bombs are thrown from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
+            BombHorizontalOffset.SettingChanged += UpdateSettings;
+
+            BombVerticalOffset = ConfigManager.BindConfig(
+                BombSection,
+                "Vertical Offset",
+                0.5f,
+                "Offsets the location that bombs are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
+            BombVerticalOffset.SettingChanged += UpdateSettings;
 
             // Crossbows
             XBowReloadSpeed = ConfigManager.BindConfig(
@@ -197,7 +245,7 @@ namespace ProjectileTweaks {
                 "Horizontal Offset",
                 0f,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             XbowHorizontalOffset.SettingChanged += UpdateSettings;
 
             XbowVerticalOffset = ConfigManager.BindConfig(
@@ -205,7 +253,7 @@ namespace ProjectileTweaks {
                 "Vertical Offset",
                 0f,
                 "Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             XbowVerticalOffset.SettingChanged += UpdateSettings;
 
             // Spears
@@ -238,7 +286,7 @@ namespace ProjectileTweaks {
                 "Horizontal Offset",
                 0.1f,
                 "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             SpearHorizontalOffset.SettingChanged += UpdateSettings;
 
             SpearVerticalOffset = ConfigManager.BindConfig(
@@ -246,7 +294,7 @@ namespace ProjectileTweaks {
                 "Vertical Offset",
                 0.5f,
                 "Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             SpearVelocityMult.SettingChanged += UpdateSettings;
 
             // Staffs
@@ -271,7 +319,7 @@ namespace ProjectileTweaks {
                 "Horizontal Offset",
                 0f,
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             StaffHorizontalOffset.SettingChanged += UpdateSettings;
 
             StaffVerticalOffset = ConfigManager.BindConfig(
@@ -279,7 +327,7 @@ namespace ProjectileTweaks {
                 "Vertical Offset",
                 0.3f,
                 "Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
-                new AcceptableValueRange<float>(-0.5f, 0.5f));
+                new AcceptableValueRange<float>(-0.75f, 0.75f));
             StaffVerticalOffset.SettingChanged += UpdateSettings;
 
             // Zoom section
