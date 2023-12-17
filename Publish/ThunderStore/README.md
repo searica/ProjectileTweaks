@@ -36,7 +36,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 	<tbody>
 		<tr>
 			<th align="center">Setting</th>
-            <th align="center">Server&nbspSync</th>
+            <th align="center">Server Sync</th>
 			<th align="center">Description</th>
 		</tr>
 		<tr>
@@ -89,7 +89,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that arrows are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.2</li>
                 </ul>
             </td>
@@ -100,8 +100,77 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that arrows are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.2</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="header">
+	<h3>Bomb Section</h3>
+  These settings control features relating to bows.
+</div>
+<table>
+	<tbody>
+		<tr>
+			<th align="center">Setting</th>
+            <th align="center">Server Sync</th>
+			<th align="center">Description</th>
+		</tr>
+        <tr>
+            <td align="center"><b>Spread Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies the min and max projectile spread, so if you set it to zero your arrows will have zero spread.
+                <ul>
+                    <li>Acceptable values: (0, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Velocity Multiplier</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Multiplies velocity of bombs.
+                <ul>
+                    <li>Acceptable values: (0.1, 2)</li>
+                    <li>Default value: 1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Launch Angle</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Changes the launch angle for bombs. Vanilla default for bombs is 0. Negative values angle upwards, and positive values angle downwards.
+                <ul>
+                    <li>Acceptable values: (-5, 5)</li>
+                    <li>Default value: -1</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Horizontal Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that bombs are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
+                <ul>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
+                    <li>Default value: 0.0</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"><b>Vertical Offset</b></td>
+            <td align="center">Yes</td>
+            <td align="left">
+                Offsets the location that bombs are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.
+                <ul>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
+                    <li>Default value: 0.5</li>
                 </ul>
             </td>
         </tr>
@@ -116,7 +185,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 	<tbody>
 		<tr>
 			<th align="center">Setting</th>
-            <th align="center">Server&nbspSync</th>
+            <th align="center">Server Sync</th>
 			<th align="center">Description</th>
 		</tr>
 		<tr>
@@ -169,7 +238,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that bolts are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.0</li>
                 </ul>
             </td>
@@ -180,7 +249,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that bolts are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.0</li>
                 </ul>
             </td>
@@ -196,7 +265,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 	<tbody>
 		<tr>
 			<th align="center">Setting</th>
-            <th align="center">Server&nbspSync</th>
+            <th align="center">Server Sync</th>
 			<th align="center">Description</th>
 		</tr>
         <tr>
@@ -238,7 +307,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that thrown spears are launched from when throwing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.1</li>
                 </ul>
             </td>
@@ -249,7 +318,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that thrown spears are launched from when throwing them. Positive shifts it upwards. Negative shifts it downwards.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.5</li>
                 </ul>
             </td>
@@ -265,7 +334,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 	<tbody>
 		<tr>
 			<th align="center">Setting</th>
-            <th align="center">Server&nbspSync</th>
+            <th align="center">Server Sync</th>
 			<th align="center">Description</th>
 		</tr>
         <tr>
@@ -307,7 +376,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that projectiles are launched from when firing them. Positive shifts it to your characters right. Negative shifts it to your characters left.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.0</li>
                 </ul>
             </td>
@@ -318,7 +387,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
             <td align="left">
                 Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.
                 <ul>
-                    <li>Acceptable values: (-0.5, 0.5)</li>
+                    <li>Acceptable values:  (-0.75, 0.75)</li>
                     <li>Default value: 0.3</li>
                 </ul>
             </td>
@@ -334,7 +403,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 	<tbody>
 		<tr>
 			<th align="center">Setting</th>
-            <th align="center">Server&nbspSync</th>
+            <th align="center">Server Sync</th>
 			<th align="center">Description</th>
 		</tr>
         <tr>

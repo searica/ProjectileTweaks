@@ -2,13 +2,10 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace ProjectileTweaks
-{
+namespace ProjectileTweaks {
     [HarmonyPatch]
-    internal static class ZoomManager
-    {
-        internal enum ZoomState
-        {
+    internal static class ZoomManager {
+        internal enum ZoomState {
             Fixed,
             ZoomingIn,
             ZoomingOut
@@ -35,20 +32,16 @@ namespace ProjectileTweaks
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.UpdateCamera))]
         [HarmonyPriority(0)]
-        public static void UpdateCameraPrefix(GameCamera __instance)
-        {
-            if (ProjectileTweaks.IsZoomEnabled && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn))
-            {
+        public static void UpdateCameraPrefix(GameCamera __instance) {
+            if (ProjectileTweaks.IsZoomEnabled && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn)) {
                 __instance.m_fov = NewZoomFov;
             }
         }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Player), nameof(Player.SetControls))]
-        private static void SetControlsPrefix(Player __instance, ref bool attackHold, ref bool blockHold)
-        {
-            if (!ProjectileTweaks.IsZoomEnabled)
-            {
+        private static void SetControlsPrefix(Player __instance, ref bool attackHold, ref bool blockHold) {
+            if (!ProjectileTweaks.IsZoomEnabled) {
                 return;
             }
 
@@ -59,8 +52,7 @@ namespace ProjectileTweaks
             }
 
             // prevent blocking while zooming in with zoomable item
-            if (CurrentZoomState == ZoomState.ZoomingIn && HasZoomableItem(__instance))
-            {
+            if (CurrentZoomState == ZoomState.ZoomingIn && HasZoomableItem(__instance)) {
                 blockHold = false;
             }
         }
@@ -74,13 +66,11 @@ namespace ProjectileTweaks
         [HarmonyPostfix]
         [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.GetCameraPosition))]
         [HarmonyPriority(100)]
-        private static void GetCameraPositionPostfix(GameCamera __instance)
-        {
+        private static void GetCameraPositionPostfix(GameCamera __instance) {
             if (__instance != null &&
                 ProjectileTweaks.IsZoomEnabled &&
                 CurrentZoomState == ZoomState.Fixed &&
-                Mathf.Abs(__instance.m_fov - BaseFov) > DiffTol)
-            {
+                Mathf.Abs(__instance.m_fov - BaseFov) > DiffTol) {
                 BaseFov = __instance.m_fov;
             }
         }
@@ -89,15 +79,12 @@ namespace ProjectileTweaks
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Hud), nameof(Hud.UpdateCrosshair))]
         [HarmonyPriority(0)]
-        private static void UpdateCrosshairPostfix(Player player, float bowDrawPercentage)
-        {
-            if (!ProjectileTweaks.IsZoomEnabled || BaseFov == 0.0f)
-            {
+        private static void UpdateCrosshairPostfix(Player player, float bowDrawPercentage) {
+            if (!ProjectileTweaks.IsZoomEnabled || BaseFov == 0.0f) {
                 return;
             }
 
-            if (!HasZoomableItem(player))
-            {
+            if (!HasZoomableItem(player)) {
                 ZoomOut();
                 return;
             }
@@ -106,22 +93,18 @@ namespace ProjectileTweaks
             bool shouldZoomBow = (isKeyPressed || ProjectileTweaks.AutoBowZoom.Value) && bowDrawPercentage > PercTol;
             bool shouldZoomXbow = isKeyPressed && player.IsWeaponLoaded();
 
-            if (shouldZoomBow || shouldZoomXbow)
-            {
+            if (shouldZoomBow || shouldZoomXbow) {
                 ZoomIn();
             }
-            else if (isKeyPressed && bowDrawPercentage <= PercTol)
-            {
+            else if (isKeyPressed && bowDrawPercentage <= PercTol) {
                 ProcessZoomOutDelay();
             }
-            else
-            {
+            else {
                 ZoomOut();
             }
         }
 
-        internal static void ZoomIn()
-        {
+        internal static void ZoomIn() {
             ZoomInTimer += Time.deltaTime;
             CurrentZoomState = ZoomState.ZoomingIn;
 
@@ -131,21 +114,16 @@ namespace ProjectileTweaks
             NewZoomFov = LastZoomFov;
         }
 
-        public static void ZoomOut()
-        {
-            if (CurrentZoomState != ZoomState.Fixed)
-            {
-                if (CurrentZoomState == ZoomState.ZoomingIn)
-                {
+        public static void ZoomOut() {
+            if (CurrentZoomState != ZoomState.Fixed) {
+                if (CurrentZoomState == ZoomState.ZoomingIn) {
                     CurrentZoomState = ZoomState.ZoomingOut;
                     ZoomOutTimer = 0f;
                     ZoomInTimer = 0f;
                 }
-                else
-                {
+                else {
                     ZoomOutTimer += Time.deltaTime;
-                    if (ZoomOutTimer > ZoomOutDuration)
-                    {
+                    if (ZoomOutTimer > ZoomOutDuration) {
                         GameCamera.instance.m_fov = BaseFov;
                         CurrentZoomState = ZoomState.Fixed;
                         ZoomOutDelayTimer = 0f;
@@ -156,17 +134,14 @@ namespace ProjectileTweaks
                 NewZoomFov = Mathf.Lerp(LastZoomFov, BaseFov, t);
                 GameCamera.instance.m_fov = NewZoomFov;
             }
-            else if (Mathf.Abs(GameCamera.instance.m_fov - BaseFov) >= DiffTol)
-            {
+            else if (Mathf.Abs(GameCamera.instance.m_fov - BaseFov) >= DiffTol) {
                 GameCamera.instance.m_fov = BaseFov;
             }
         }
 
-        internal static void ProcessZoomOutDelay()
-        {
+        internal static void ProcessZoomOutDelay() {
             ZoomOutDelayTimer += Time.deltaTime;
-            if (ZoomOutDelayTimer > ProjectileTweaks.StayInZoomTime.Value)
-            {
+            if (ZoomOutDelayTimer > ProjectileTweaks.StayInZoomTime.Value) {
                 ZoomOut();
             }
         }
@@ -176,11 +151,9 @@ namespace ProjectileTweaks
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        internal static bool HasZoomableItem(Player player)
-        {
+        internal static bool HasZoomableItem(Player player) {
             var leftItem = player.GetCurrentWeapon();
-            if (leftItem != null)
-            {
+            if (leftItem != null) {
                 var itemSkill = leftItem.m_shared.m_skillType;
                 bool isZoomableBow = ProjectileTweaks.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
                 bool isZoomableXbow = ProjectileTweaks.EnableXbowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
