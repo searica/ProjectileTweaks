@@ -10,20 +10,21 @@ using ProjectileTweaks.Configs;
 using System;
 using Jotunn.Managers;
 
-namespace ProjectileTweaks {
+namespace ProjectileTweaks
+{
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
-    internal class ProjectileTweaks : BaseUnityPlugin {
+    internal class ProjectileTweaks : BaseUnityPlugin
+    {
         public const string Author = "Searica";
         public const string PluginName = "ProjectileTweaks";
         public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-        public const string PluginVersion = "1.2.1";
+        public const string PluginVersion = "1.3.0";
 
         // Use this class to add your own localization to the game
         // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
         //private static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
-
 
         private const string BombSection = "BombTweaks";
         private const string BowSection = "BowTweaks";
@@ -85,7 +86,8 @@ namespace ProjectileTweaks {
         /// <summary>
         ///     Called by Unity
         /// </summary>
-        public void Awake() {
+        public void Awake()
+        {
             Log.Init(this.Logger);
 
             ConfigManager.Init(PluginGUID, Config, false);
@@ -98,11 +100,13 @@ namespace ProjectileTweaks {
 
             ConfigManager.SetupWatcher();
 
-            SynchronizationManager.OnConfigurationWindowClosed += () => {
+            SynchronizationManager.OnConfigurationWindowClosed += () =>
+            {
                 UpdateConfigFile();
             };
 
-            SynchronizationManager.OnConfigurationSynchronized += (sender, e) => {
+            SynchronizationManager.OnConfigurationSynchronized += (sender, e) =>
+            {
                 UpdateConfigFile();
             };
         }
@@ -110,17 +114,19 @@ namespace ProjectileTweaks {
         /// <summary>
         ///     Called by Unity
         /// </summary>
-        public void OnDestroy() {
+        public void OnDestroy()
+        {
             ConfigManager.Save();
         }
 
-        private void Initialize() {
+        private void Initialize()
+        {
             // Bows
             BowDrawSpeed = ConfigManager.BindConfig(
                 BowSection,
                 ConfigManager.SetStringPriority("Draw Speed Multiplier", 4),
                 1f,
-                "Multiplier for draw speed of bows. Does not affect Vanilla scaling with skill level.",
+                "Multiplier for draw speed of bows. Set to 2 to draw bows twice as fast. Does not affect Vanilla scaling with skill level.",
                 new AcceptableValueRange<float>(0.5f, 2f)
             );
             BowDrawSpeed.SettingChanged += UpdateSettings;
@@ -211,7 +217,7 @@ namespace ProjectileTweaks {
                 XbowSection,
                 ConfigManager.SetStringPriority("Reload Speed Multiplier", 4),
                 1f,
-                "Multiplier for reload speed of crossbows. Does not affect Vanilla scaling with skill level.",
+                "Multiplier for reload speed of crossbows. Set to 2 to reload twice as fast. Does not affect Vanilla scaling with skill level.",
                 new AcceptableValueRange<float>(0.5f, 2f)
             );
             XBowReloadSpeed.SettingChanged += UpdateSettings;
@@ -397,14 +403,17 @@ namespace ProjectileTweaks {
             AutoBowZoom.SettingChanged += UpdateSettings;
         }
 
-        private static void UpdateConfigFile() {
-            if (ShouldSaveConfig) {
+        private static void UpdateConfigFile()
+        {
+            if (ShouldSaveConfig)
+            {
                 ConfigManager.Save();
                 ShouldSaveConfig = false;
             }
         }
 
-        private static void UpdateSettings(object obj, EventArgs e) {
+        private static void UpdateSettings(object obj, EventArgs e)
+        {
             ShouldSaveConfig |= !ShouldSaveConfig;
         }
     }
@@ -412,7 +421,8 @@ namespace ProjectileTweaks {
     /// <summary>
     ///     Log level to control output to BepInEx log
     /// </summary>
-    internal enum LogLevel {
+    internal enum LogLevel
+    {
         Low = 0,
         Medium = 1,
         High = 2,
@@ -421,7 +431,8 @@ namespace ProjectileTweaks {
     /// <summary>
     ///     Helper class for properly logging from static contexts.
     /// </summary>
-    internal static class Log {
+    internal static class Log
+    {
         private const BindingFlags AllBindings =
                BindingFlags.Public
                | BindingFlags.NonPublic
@@ -444,7 +455,8 @@ namespace ProjectileTweaks {
 
         private static ManualLogSource logSource;
 
-        internal static void Init(ManualLogSource logSource) {
+        internal static void Init(ManualLogSource logSource)
+        {
             Log.logSource = logSource;
         }
 
@@ -458,43 +470,50 @@ namespace ProjectileTweaks {
 
         internal static void LogWarning(object data) => logSource.LogWarning(data);
 
-        internal static void LogInfo(object data, LogLevel level = LogLevel.Low) {
-            if (Verbosity is null || VerbosityLevel >= level) {
+        internal static void LogInfo(object data, LogLevel level = LogLevel.Low)
+        {
+            if (Verbosity is null || VerbosityLevel >= level)
+            {
                 logSource.LogInfo(data);
             }
         }
 
-        internal static void LogGameObject(GameObject prefab, bool includeChildren = false) {
+        internal static void LogGameObject(GameObject prefab, bool includeChildren = false)
+        {
             LogInfo("***** " + prefab.name + " *****");
-            foreach (Component compo in prefab.GetComponents<Component>()) {
+            foreach (Component compo in prefab.GetComponents<Component>())
+            {
                 LogComponent(compo);
             }
 
             if (!includeChildren) { return; }
 
             LogInfo("***** " + prefab.name + " (children) *****");
-            foreach (Transform child in prefab.transform) {
+            foreach (Transform child in prefab.transform)
+            {
                 LogInfo($" - {child.gameObject.name}");
-                foreach (Component compo in child.gameObject.GetComponents<Component>()) {
+                foreach (Component compo in child.gameObject.GetComponents<Component>())
+                {
                     LogComponent(compo);
                 }
             }
         }
 
-        internal static void LogComponent(Component compo) {
+        internal static void LogComponent(Component compo)
+        {
             LogInfo($"--- {compo.GetType().Name}: {compo.name} ---");
 
             PropertyInfo[] properties = compo.GetType().GetProperties(AllBindings);
-            foreach (var property in properties) {
+            foreach (var property in properties)
+            {
                 LogInfo($" - {property.Name} = {property.GetValue(compo)}");
             }
 
             FieldInfo[] fields = compo.GetType().GetFields(AllBindings);
-            foreach (var field in fields) {
+            foreach (var field in fields)
+            {
                 LogInfo($" - {field.Name} = {field.GetValue(compo)}");
             }
         }
     }
 }
-
-

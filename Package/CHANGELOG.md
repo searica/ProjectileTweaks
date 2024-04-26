@@ -8,6 +8,15 @@
 			<td align="center">1.2.0/1.2.1</td>
 			<td align="left">
 				<ul>
+					<li>Changed speed multiplier configs to make things faster if value is larger.</li>
+					<li>Updated Jotunn version.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">1.2.0/1.2.1</td>
+			<td align="left">
+				<ul>
 					<li>Added config options for bombs.</li>
 					<li>Updated README.</li>
 					<li>Updated Jotunn dependency string.</li>

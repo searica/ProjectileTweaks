@@ -43,7 +43,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 			<td align="center"><b>Draw Speed Multiplier</b></td>
             <td align="center">Yes</td>
 			<td align="left">
-                Multiplier for draw speed of bows. Does not affect Vanilla scaling with skill level.
+                Multiplier for draw speed of bows. Set to 2 to draw twice as fast. Does not affect Vanilla scaling with skill level.
 				<ul>
 					<li>Acceptable values: (0.5, 2)</li>
 					<li>Default value: 1</li>
@@ -192,7 +192,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 			<td align="center"><b>Reload Speed Multiplier</b></td>
             <td align="center">Yes</td>
 			<td align="left">
-                Multiplier for reload speed of crossbows. Does not affect Vanilla scaling with skill level.
+                Multiplier for reload speed of crossbows. Set to 2 to reload twice as fast. Does not affect Vanilla scaling with skill level.
 				<ul>
 					<li>Acceptable values: (0.5, 2)</li>
 					<li>Default value: 1</li>

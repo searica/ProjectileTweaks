@@ -13,13 +13,12 @@ namespace ProjectileTweaks.Patches
             if (__instance.m_shared.m_attack.m_requiresReload)
             {
                 __state = __instance.m_shared.m_attack.m_reloadTime;
-                __instance.m_shared.m_attack.m_reloadTime *= ProjectileTweaks.XBowReloadSpeed.Value;
+                __instance.m_shared.m_attack.m_reloadTime *= (1 / ProjectileTweaks.XBowReloadSpeed.Value);
                 return;
             }
 
             __state = -1f;
         }
-
 
         [HarmonyPostfix]
         [HarmonyPriority(Priority.First)]
@@ -31,6 +30,5 @@ namespace ProjectileTweaks.Patches
                 __instance.m_shared.m_attack.m_reloadTime = __state;
             }
         }
-
     }
 }
