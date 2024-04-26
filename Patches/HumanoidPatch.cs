@@ -16,14 +16,13 @@ namespace ProjectileTweaks.Patches
                 if (currentWeapon != null && currentWeapon.m_shared.m_attack.m_bowDraw)
                 {
                     __state = currentWeapon.m_shared.m_attack.m_drawDurationMin;
-                    currentWeapon.m_shared.m_attack.m_drawDurationMin = __state * ProjectileTweaks.BowDrawSpeed.Value;
+                    currentWeapon.m_shared.m_attack.m_drawDurationMin = __state * (1 / ProjectileTweaks.BowDrawSpeed.Value);
                     return;
                 }
             }
 
             __state = -1f;
         }
-
 
         [HarmonyPostfix]
         [HarmonyPriority(Priority.First)]
