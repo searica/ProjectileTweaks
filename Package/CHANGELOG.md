@@ -8,6 +8,15 @@
 			<td align="center">1.2.0/1.2.1</td>
 			<td align="left">
 				<ul>
+					<li>Updated for Ashlands release.</li>
+					<li>Note: I have not tested all of the new projectiles in Ashlands yet but can confirm that all projectiles that existed pre-Ashlands still work as intended.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">1.2.0/1.2.1</td>
+			<td align="left">
+				<ul>
 					<li>Changed speed multiplier configs to make things faster if value is larger.</li>
 					<li>Updated Jotunn version.</li>
 				</ul>
