@@ -32,10 +32,31 @@ namespace ProjectileTweaks {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.UpdateCamera))]
         [HarmonyPriority(0)]
-        public static void UpdateCameraPrefix(GameCamera __instance) {
+        private static void UpdateCameraPrefix(GameCamera __instance) {
             if (ProjectileTweaks.IsZoomEnabled && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn)) {
                 __instance.m_fov = NewZoomFov;
             }
+        }
+
+        /// <summary>
+        ///     Check for un-zoomed FoV so it can be reset correctly. Also check if
+        ///     the base un-zoomed GameCamera FoV has changed since it was last stored.
+        ///     (Mods like CameraTweaks can change default FoV)
+        /// </summary>
+        /// <param name="__instance"></param>
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.UpdateCamera))]
+        [HarmonyPriority(Priority.Low)]
+        private static void UpdateCameraPostfix(GameCamera __instance)
+        {
+            if (__instance != null &&
+                ProjectileTweaks.IsZoomEnabled &&
+                CurrentZoomState == ZoomState.Fixed &&
+                Mathf.Abs(__instance.m_fov - BaseFov) > DiffTol)
+            {
+                BaseFov = __instance.m_fov;
+            }
+
         }
 
         [HarmonyPrefix]
@@ -56,25 +77,6 @@ namespace ProjectileTweaks {
                 blockHold = false;
             }
         }
-
-        /// <summary>
-        ///     Check for un-zoomed FoV so it can be reset correctly. Also check if
-        ///     the base un-zoomed GameCamera FoV has changed since it was last stored.
-        ///     (Mods like CameraTweaks can change default FoV)
-        /// </summary>
-        /// <param name="__instance"></param>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.GetCameraPosition))]
-        [HarmonyPriority(100)]
-        private static void GetCameraPositionPostfix(GameCamera __instance) {
-            if (__instance != null &&
-                ProjectileTweaks.IsZoomEnabled &&
-                CurrentZoomState == ZoomState.Fixed &&
-                Mathf.Abs(__instance.m_fov - BaseFov) > DiffTol) {
-                BaseFov = __instance.m_fov;
-            }
-        }
-
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Hud), nameof(Hud.UpdateCrosshair))]
