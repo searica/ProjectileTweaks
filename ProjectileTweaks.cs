@@ -15,6 +15,7 @@ namespace ProjectileTweaks
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(Jotunn.Main.ModGuid, Jotunn.Main.Version)]
     [NetworkCompatibility(CompatibilityLevel.VersionCheckOnly, VersionStrictness.Patch)]
+    [SynchronizationMode(AdminOnlyStrictness.IfOnServer)]
     internal class ProjectileTweaks : BaseUnityPlugin
     {
         public const string Author = "Searica";
