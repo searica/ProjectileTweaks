@@ -5,6 +5,15 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.5.2</td>
+			<td align="left">
+				<ul>
+					<li>Compatibility fix for First Person mode by Azumatt. The first person FoV should now work as intended when ProjectileTweaks is installed.</li>
+					<li>If you switch between first and third person while zooming in it will still zoom out to the FoV it was when you zoomed in though.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.5.1</td>
 			<td align="left">
 				<ul>
