@@ -37,7 +37,7 @@ internal static class ZoomManager
     [HarmonyPriority(0)]
     private static void UpdateCameraPrefix(GameCamera __instance)
     {
-        if (ProjectileTweaks.IsZoomEnabled && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn))
+        if (ProjectileTweaks.Instance.IsZoomEnabled && (CurrentZoomState == ZoomState.ZoomingOut || CurrentZoomState == ZoomState.ZoomingIn))
         {
             __instance.m_fov = NewZoomFov;
         }
@@ -55,7 +55,7 @@ internal static class ZoomManager
     private static void UpdateCameraPostfix(GameCamera __instance)
     {
         if (__instance != null &&
-            ProjectileTweaks.IsZoomEnabled &&
+            ProjectileTweaks.Instance.IsZoomEnabled &&
             CurrentZoomState == ZoomState.Fixed &&
             Mathf.Abs(__instance.m_fov - BaseFov) > DiffTol)
         {
@@ -68,14 +68,14 @@ internal static class ZoomManager
     [HarmonyPatch(typeof(Player), nameof(Player.SetControls))]
     private static void SetControlsPrefix(Player __instance, ref bool attackHold, ref bool blockHold)
     {
-        if (!ProjectileTweaks.IsZoomEnabled)
+        if (!ProjectileTweaks.Instance.IsZoomEnabled)
         {
             return;
         }
 
         if (attackHold) // use to cancel bow draw
         {
-            blockHold = Input.GetKey(ProjectileTweaks.CancelDrawKey.Value);
+            blockHold = Input.GetKey(ProjectileTweaks.Instance.CancelDrawKey.Value);
             return;
         }
 
@@ -91,7 +91,7 @@ internal static class ZoomManager
     [HarmonyPriority(0)]
     private static void UpdateCrosshairPostfix(Player player, float bowDrawPercentage)
     {
-        if (!ProjectileTweaks.IsZoomEnabled || BaseFov == 0.0f)
+        if (!ProjectileTweaks.Instance.IsZoomEnabled || BaseFov == 0.0f)
         {
             return;
         }
@@ -102,8 +102,8 @@ internal static class ZoomManager
             return;
         }
 
-        bool isKeyPressed = Input.GetKey(ProjectileTweaks.ZoomKey.Value);
-        bool shouldZoomBow = (isKeyPressed || ProjectileTweaks.AutoBowZoom.Value) && bowDrawPercentage > PercTol;
+        bool isKeyPressed = Input.GetKey(ProjectileTweaks.Instance.ZoomKey.Value);
+        bool shouldZoomBow = (isKeyPressed || ProjectileTweaks.Instance.AutoBowZoom.Value) && bowDrawPercentage > PercTol;
         bool shouldZoomXbow = isKeyPressed && player.IsWeaponLoaded();
 
         if (shouldZoomBow || shouldZoomXbow)
@@ -125,8 +125,8 @@ internal static class ZoomManager
         ZoomInTimer += Time.deltaTime;
         CurrentZoomState = ZoomState.ZoomingIn;
 
-        float t = Mathf.InverseLerp(0.05f, ProjectileTweaks.TimeToZoomIn.Value, ZoomInTimer);
-        LastZoomFov = Mathf.Lerp(BaseFov, BaseFov / ProjectileTweaks.ZoomFactor.Value, t);
+        float t = Mathf.InverseLerp(0.05f, ProjectileTweaks.Instance.TimeToZoomIn.Value, ZoomInTimer);
+        LastZoomFov = Mathf.Lerp(BaseFov, BaseFov / ProjectileTweaks.Instance.ZoomFactor.Value, t);
         GameCamera.instance.m_fov = LastZoomFov;
         NewZoomFov = LastZoomFov;
     }
@@ -165,7 +165,7 @@ internal static class ZoomManager
     internal static void ProcessZoomOutDelay()
     {
         ZoomOutDelayTimer += Time.deltaTime;
-        if (ZoomOutDelayTimer > ProjectileTweaks.StayInZoomTime.Value)
+        if (ZoomOutDelayTimer > ProjectileTweaks.Instance.StayInZoomTime.Value)
         {
             ZoomOut();
         }
@@ -182,8 +182,8 @@ internal static class ZoomManager
         if (leftItem != null)
         {
             Skills.SkillType itemSkill = leftItem.m_shared.m_skillType;
-            bool isZoomableBow = ProjectileTweaks.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
-            bool isZoomableXbow = ProjectileTweaks.EnableXbowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
+            bool isZoomableBow = ProjectileTweaks.Instance.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
+            bool isZoomableXbow = ProjectileTweaks.Instance.EnableXbowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
             return isZoomableBow || isZoomableXbow;
         }
 

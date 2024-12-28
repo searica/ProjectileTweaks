@@ -24,32 +24,32 @@ internal static class AttackPatch
         Skills.SkillType skillType = weapon.m_shared.m_skillType;
         if (skillType == Skills.SkillType.Bows)
         {
-            SetVelocity(__instance, ProjectileTweaks.BowVelocityMult);
-            SetSpread(__instance, ProjectileTweaks.BowSpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.BowLaunchAngle);
+            SetVelocity(__instance, ProjectileTweaks.Instance.BowTweaks.VelocityMult);
+            SetSpread(__instance, ProjectileTweaks.Instance.BowTweaks.SpreadMult);
+            SetLaunchAngle(__instance, ProjectileTweaks.Instance.BowTweaks.LaunchAngle);
         }
         else if (skillType == Skills.SkillType.Crossbows)
         {
-            SetVelocity(__instance, ProjectileTweaks.XbowVelocityMult);
-            SetSpread(__instance, ProjectileTweaks.XbowSpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.XbowLaunchAngle);
+            SetVelocity(__instance, ProjectileTweaks.Instance.XBowTweaks.VelocityMult);
+            SetSpread(__instance, ProjectileTweaks.Instance.XBowTweaks.SpreadMult);
+            SetLaunchAngle(__instance, ProjectileTweaks.Instance.XBowTweaks.LaunchAngle);
         }
         else if (skillType == Skills.SkillType.Spears)
         {
-            SetVelocity(__instance, ProjectileTweaks.SpearVelocityMult);
-            SetSpread(__instance, ProjectileTweaks.SpearSpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.SpearLaunchAngle);
+            SetVelocity(__instance, ProjectileTweaks.Instance.SpearTweaks.VelocityMult);
+            SetSpread(__instance, ProjectileTweaks.Instance.SpearTweaks.SpreadMult);
+            SetLaunchAngle(__instance, ProjectileTweaks.Instance.SpearTweaks.LaunchAngle);
         }
         else if (skillType == Skills.SkillType.ElementalMagic)
         {
-            SetVelocity(__instance, ProjectileTweaks.StaffVelocityMult);
-            SetSpread(__instance, ProjectileTweaks.StaffSpreadMult);
+            SetVelocity(__instance, ProjectileTweaks.Instance.StaffTweaks.VelocityMult);
+            SetSpread(__instance, ProjectileTweaks.Instance.StaffTweaks.SpreadMult);
         }
         else if (IsBomb(weapon))
         {
-            SetVelocity(__instance, ProjectileTweaks.BombVelocityMult);
-            SetSpread(__instance, ProjectileTweaks.BombSpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.BombLaunchAngle);
+            SetVelocity(__instance, ProjectileTweaks.Instance.BombTweaks.VelocityMult);
+            SetSpread(__instance, ProjectileTweaks.Instance.BombTweaks.SpreadMult);
+            SetLaunchAngle(__instance, ProjectileTweaks.Instance.BombTweaks.LaunchAngle);
         }
     }
 
@@ -109,40 +109,40 @@ internal static class AttackPatch
             ApplyOffset(
                 ref spawnPoint,
                 ref aimDir,
-                ProjectileTweaks.BowVerticalOffset.Value,
-                ProjectileTweaks.BowHorizontalOffset.Value);
+                ProjectileTweaks.Instance.BowTweaks.VerticalOffset.Value,
+                ProjectileTweaks.Instance.BowTweaks.HorizontalOffset.Value);
         }
         else if (skillType == Skills.SkillType.Crossbows)
         {
             ApplyOffset(
                 ref spawnPoint,
                 ref aimDir,
-                ProjectileTweaks.XbowVerticalOffset.Value,
-                ProjectileTweaks.XbowHorizontalOffset.Value);
+                ProjectileTweaks.Instance.XBowTweaks.VerticalOffset.Value,
+                ProjectileTweaks.Instance.XBowTweaks.HorizontalOffset.Value);
         }
         else if (skillType == Skills.SkillType.Spears)
         {
             ApplyOffset(
                 ref spawnPoint,
                 ref aimDir,
-                ProjectileTweaks.SpearVerticalOffset.Value,
-                ProjectileTweaks.SpearHorizontalOffset.Value);
+                ProjectileTweaks.Instance.SpearTweaks.VerticalOffset.Value,
+                ProjectileTweaks.Instance.SpearTweaks.HorizontalOffset.Value);
         }
         else if (skillType == Skills.SkillType.ElementalMagic)
         {
             ApplyOffset(
                 ref spawnPoint,
                 ref aimDir,
-                ProjectileTweaks.StaffVerticalOffset.Value,
-                ProjectileTweaks.StaffHorizontalOffset.Value);
+                ProjectileTweaks.Instance.StaffTweaks.VerticalOffset.Value,
+                ProjectileTweaks.Instance.StaffTweaks.HorizontalOffset.Value);
         }
         else if (IsBomb(weapon))
         {
             ApplyOffset(
                 ref spawnPoint,
                 ref aimDir,
-                ProjectileTweaks.BombVerticalOffset.Value,
-                ProjectileTweaks.BombHorizontalOffset.Value);
+                ProjectileTweaks.Instance.BombTweaks.VerticalOffset.Value,
+                ProjectileTweaks.Instance.BombTweaks.HorizontalOffset.Value);
         }
     }
 

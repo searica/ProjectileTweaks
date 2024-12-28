@@ -16,7 +16,7 @@ internal static class HumanoidPatch
             if (currentWeapon != null && currentWeapon.m_shared.m_attack.m_bowDraw)
             {
                 __state = currentWeapon.m_shared.m_attack.m_drawDurationMin;
-                currentWeapon.m_shared.m_attack.m_drawDurationMin = __state * (1 / ProjectileTweaks.BowDrawSpeed.Value);
+                currentWeapon.m_shared.m_attack.m_drawDurationMin = __state * (1 / ProjectileTweaks.Instance.BowTweaks.LoadSpeed.Value);
                 return;
             }
         }

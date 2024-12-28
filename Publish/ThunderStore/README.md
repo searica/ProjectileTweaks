@@ -26,7 +26,7 @@ For staffs you can customize:
 The default configuration adjusts the spawn position of projectiles fired from staffs so that if spread is set to zero the projectile is aligned with the aiming crosshair.
 
 ## Configuration
-A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created after running the game once with this mod. You can adjust the config values by editing this file using a text editor or in-game using the Configuration Manager. The mod has a built-in file watcher so either method will work and changes will be reflected in-game as you change the settings.
+A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.Instance.cfg is created after running the game once with this mod. You can adjust the config values by editing this file using a text editor or in-game using the Configuration Manager. The mod has a built-in file watcher so either method will work and changes will be reflected in-game as you change the settings.
 
 <div class="header">
 	<h3>Bow Section</h3>
@@ -506,7 +506,7 @@ These are non-exhaustive lists, feel free to let me know if you want a mod added
 ### Compatible Mods
 **BowsBeforeHoes (by Azumatt)**: Fully compatible and BowsBeforeHoes is recommended if you want a quiver for your arrows, and the option to recover arrows after firing them. As both mods offer zoom features it is recommended you only enable the zoom feature from one mod.
 
-**MagicPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles launched from staffs work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultiper` set to 1 in the configuration for ProjectileTweaks.
+**MagicPlugin (by Blacks7ar)**: ProjectileTweaks and MagicPlugin can be used together without issue but both mods allow adjusting how projectiles launched from staffs work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultiper` set to 1 in the configuration for ProjectileTweaks.Instance.
 
 **BowPlugin (by Blacks7ar)**: ProjectileTweaks and BowPlugin can be used together without issue but both mods allow adjusting how projectiles fired from bows and crossbows work. If you use these two mods together then leave `SpreadMultiplier` and `VelocityMultipier` set to 1 in the configuration for both Bows and Crossbows. I have also set up ProjectileTweaks so that the settings for `LaunchAngle` should be overridden by the settings in BowPlugin, so `LaunchAngle` settings in ProjectileTweaks will have no effect if BowPlugin is installed.
 

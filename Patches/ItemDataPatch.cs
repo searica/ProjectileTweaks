@@ -13,7 +13,7 @@ internal static class ItemDataPatch
         if (__instance.m_shared.m_attack.m_requiresReload)
         {
             __state = __instance.m_shared.m_attack.m_reloadTime;
-            __instance.m_shared.m_attack.m_reloadTime *= (1 / ProjectileTweaks.XBowReloadSpeed.Value);
+            __instance.m_shared.m_attack.m_reloadTime *= (1 / ProjectileTweaks.Instance.XBowTweaks.LoadSpeed.Value);
             return;
         }
 
