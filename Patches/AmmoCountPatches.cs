@@ -5,15 +5,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ItemDrop;
-
-
+using Logging;
 
 namespace ProjectileTweaks.Patches;
 
 [HarmonyPatch]
 internal static class AmmoCountPatches
 {
-    private const string FontName = "AveriaSansLibre-Bold";
+    private const string FontName = "Valheim-AveriaSansLibre";
+    private static bool HasWarnedAboutFont = false;
     private const FontStyles FontStyle = FontStyles.Bold;
     private static TMP_FontAsset _CurrentFont = null;
     private const string AmmoCountName = "AmmoCount";
@@ -21,7 +21,7 @@ internal static class AmmoCountPatches
     {
         get
         {
-            if (_CurrentFont == null)
+            if (_CurrentFont is null)
             { 
                 TMP_FontAsset[] array = Resources.FindObjectsOfTypeAll<TMP_FontAsset>();
                 foreach (TMP_FontAsset tmp_FontAsset in array)
@@ -34,9 +34,10 @@ internal static class AmmoCountPatches
                 }
             }
 
-            if (_CurrentFont == null)
+            if (!HasWarnedAboutFont && _CurrentFont is null)
             {
-                throw new Exception($"Could not find font {FontName}!");
+                HasWarnedAboutFont = true;
+                Log.LogWarning($"Could not find font {FontName}! Falling back to default font.");
             }
             return _CurrentFont;
         }
@@ -103,7 +104,10 @@ internal static class AmmoCountPatches
         rectTransform.sizeDelta = new Vector2(90f, 90f);
 
         // Set text
-        textMeshProUGUI.font = CurrentFont;
+        if (CurrentFont != null) 
+        {
+            textMeshProUGUI.font = CurrentFont;
+        }    
         textMeshProUGUI.fontSize = ProjectileTweaks.Instance.AmmoTextSize.Value;
         textMeshProUGUI.fontStyle = FontStyle;
         textMeshProUGUI.alignment = ProjectileTweaks.Instance.AmmoTextAlignment.Value;
@@ -156,13 +160,13 @@ internal static class AmmoCountPatches
         }
         
         ammoItemData = Player.m_localPlayer.GetAmmoItem();
-        if (ammoItemData != null && (!Player.m_localPlayer.GetInventory().ContainsItem(ammoItemData) || ammoItemData.m_shared.m_ammoType != weapon.m_shared.m_ammoType))
+        if (ammoItemData is not null && (!Player.m_localPlayer.GetInventory().ContainsItem(ammoItemData) || ammoItemData.m_shared.m_ammoType != weapon.m_shared.m_ammoType))
         {
             ammoItemData = null;
         }
         ammoItemData ??= Player.m_localPlayer.GetInventory().GetAmmoItem(weapon.m_shared.m_ammoType);
 
-        return ammoItemData != null;
+        return ammoItemData is not null;
     }
 
 
