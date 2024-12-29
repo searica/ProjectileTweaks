@@ -186,7 +186,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
     // Ammo count settings
     private const string AmmoCountSection = "Ammo Count";
-    internal ConfigEntry<bool> EnableAmmoCount { get; private set; }
     internal ConfigEntry<bool> ShowAmmoIcon { get; private set; }
     internal ConfigEntry<Vector2> AmmoIconPosition { get; private set; }
     internal ConfigEntry<Vector2> AmmoIconSize { get; private set; }
@@ -365,13 +364,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
 
         // Ammo Icon configs
-        EnableAmmoCount = Config.BindConfigInOrder(
-            AmmoCountSection,
-            "Ammo Counter",
-            true,
-            "Whether to show an ammo counter in the hot bar for weapons.",
-            synced: false
-        );
         ShowAmmoIcon = Config.BindConfigInOrder(
             AmmoCountSection,
             "Show Ammo Icon",
@@ -422,7 +414,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
             synced: false
         );
 
-        EnableAmmoCount.SettingChanged += UpdateSettings;
         ShowAmmoIcon.SettingChanged += UpdateSettings;
         AmmoIconPosition.SettingChanged += UpdateSettings;
         AmmoIconSize.SettingChanged += UpdateSettings;
@@ -431,7 +422,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
         AmmoTextColor.SettingChanged += UpdateSettings;
         AmmoTextPosition.SettingChanged += UpdateSettings;
 
-        EnableAmmoCount.SettingChanged += SetUpdateIcon;
         ShowAmmoIcon.SettingChanged += SetUpdateIcon;
         AmmoIconPosition.SettingChanged += SetUpdateIcon;
         AmmoIconSize.SettingChanged += SetUpdateIcon;
