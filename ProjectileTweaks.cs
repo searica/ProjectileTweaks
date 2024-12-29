@@ -30,15 +30,15 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
     public static ProjectileTweaks Instance;
 
-    private const string BombSection = "BombTweaks";
-    private const string BowSection = "BowTweaks";
-    private const string XbowSection = "CrossbowTweaks";
-    private const string SpearSection = "SpearTweaks";
-    private const string StaffSection = "StaffTweaks";
+    private const string BombSection = "Bomb Tweaks";
+    private const string BowSection = "Bow Tweaks";
+    private const string XbowSection = "Crossbow Tweaks";
+    private const string SpearSection = "Spear Tweaks";
+    private const string StaffSection = "Staff Tweaks";
     private const string ZoomSection = "Zoom";
 
     private static bool ShouldSaveConfig = false;
-
+    
     internal class ProjectileConfig
     {
         public string SectionName { get; private set; }
@@ -165,6 +165,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
     internal ProjectileConfig XBowTweaks;
     internal ProjectileConfig SpearTweaks;
     internal ProjectileConfig StaffTweaks;
+
+    // Zoom settings
     internal ConfigEntry<bool> EnableBowZoom { get; private set; }
 
     internal ConfigEntry<bool> EnableXbowZoom { get; private set; }
@@ -173,7 +175,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
     internal ConfigEntry<float> StayInZoomTime { get; private set; }
     internal ConfigEntry<float> TimeToZoomIn { get; private set; }
     internal ConfigEntry<float> ZoomFactor { get; private set; }
-
     internal  ConfigEntry<bool> AutoBowZoom { get; private set; }
 
     /// <summary>
@@ -278,7 +279,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
             defaultVerticalOffset: 0.3f
         );
        
-        // Zoom section
+        // Zoom Configs
         EnableBowZoom = Config.BindConfigInOrder(
             ZoomSection,
             "Bow Zoom",
