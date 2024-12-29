@@ -183,7 +183,7 @@ internal static class ZoomManager
         {
             Skills.SkillType itemSkill = leftItem.m_shared.m_skillType;
             bool isZoomableBow = ProjectileTweaks.Instance.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
-            bool isZoomableXbow = ProjectileTweaks.Instance.EnableXbowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
+            bool isZoomableXbow = ProjectileTweaks.Instance.EnableXBowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
             return isZoomableBow || isZoomableXbow;
         }
 

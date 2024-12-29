@@ -42,15 +42,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
     
     internal class ProjectileConfig
     {
-        public string SectionName { get; private set; }
-        public string ProjectileType { get; private set; }
-        public float DefaultSpread { get; private set; }
-        public float DefaultVelocity { get; private set; }
-        public float DefaultLaunchAngle { get; private set; } 
-        public float DefaultLoadSpeed { get; private set; }
-        public float DefaultVerticalOffset { get; private set; } 
-        public float DefaultHorizontalOffset { get; private set; }
-        
+        public string SectionName { get; private set; }        
         public ConfigEntry<float> SpreadMult { get; private set; }
         public ConfigEntry<float> VelocityMult { get; private set; }
         public ConfigEntry<float> LaunchAngle { get; private set; }
@@ -169,8 +161,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
     // Zoom settings
     internal ConfigEntry<bool> EnableBowZoom { get; private set; }
-
-    internal ConfigEntry<bool> EnableXbowZoom { get; private set; }
+    internal ConfigEntry<bool> EnableXBowZoom { get; private set; }
     internal ConfigEntry<KeyCode> ZoomKey { get; private set; }
     internal ConfigEntry<KeyCode> CancelDrawKey { get; private set; }
     internal ConfigEntry<float> StayInZoomTime { get; private set; }
@@ -181,7 +172,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
     /// <summary>
     ///     Bool indicating if zooming is enabled for bow || crossbow
     /// </summary>
-    internal bool IsZoomEnabled => EnableBowZoom.Value || EnableXbowZoom.Value;
+    internal bool IsZoomEnabled => EnableBowZoom.Value || EnableXBowZoom.Value;
 
 
     // Ammo count settings
@@ -300,12 +291,12 @@ internal class ProjectileTweaks : BaseUnityPlugin
             "Set to true/enabled to allow zooming while using a bow.");
         EnableBowZoom.SettingChanged += UpdateSettings;
 
-        EnableXbowZoom = Config.BindConfigInOrder(
+        EnableXBowZoom = Config.BindConfigInOrder(
             ZoomSection,
             "Crossbow Zoom",
             true,
             "Set to true/enabled to allow zooming while using a crossbow.");
-        EnableXbowZoom.SettingChanged += UpdateSettings;
+        EnableXBowZoom.SettingChanged += UpdateSettings;
 
         ZoomKey = Config.BindConfigInOrder(
             ZoomSection,

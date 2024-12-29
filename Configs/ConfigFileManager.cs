@@ -9,7 +9,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Logging;
-using static System.Collections.Specialized.BitVector32;
 
 namespace Configs;
 
