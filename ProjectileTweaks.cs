@@ -6,6 +6,7 @@ using HarmonyLib;
 using Jotunn.Utils;
 using UnityEngine;
 using System;
+using TMPro;
 using Jotunn.Managers;
 using Configs;
 using Logging;
@@ -182,6 +183,19 @@ internal class ProjectileTweaks : BaseUnityPlugin
     /// </summary>
     internal bool IsZoomEnabled => EnableBowZoom.Value || EnableXbowZoom.Value;
 
+
+    // Ammo count settings
+    private const string AmmoCountSection = "Ammo Count";
+    internal ConfigEntry<bool> EnableAmmoCount { get; private set; }
+    internal ConfigEntry<bool> ShowAmmoIcon { get; private set; }
+    internal ConfigEntry<Vector2> AmmoIconPosition { get; private set; }
+    internal ConfigEntry<Vector2> AmmoIconSize { get; private set; }
+    internal ConfigEntry<int> AmmoTextSize { get; private set; }
+    internal ConfigEntry<TextAlignmentOptions> AmmoTextAlignment { get; private set; }
+    internal ConfigEntry<Color> AmmoTextColor { get; private set; } 
+    internal ConfigEntry<Vector2> AmmoTextPosition { get; private set; }
+    internal static bool ShouldResetIcon { get; set; } = true;
+
     /// <summary>
     ///     Called by Unity
     /// </summary>
@@ -348,6 +362,83 @@ internal class ProjectileTweaks : BaseUnityPlugin
             synced: false
         );
         AutoBowZoom.SettingChanged += UpdateSettings;
+
+
+        // Ammo Icon configs
+        EnableAmmoCount = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Ammo Counter",
+            true,
+            "Whether to show an ammo counter in the hot bar for weapons.",
+            synced: false
+        );
+        ShowAmmoIcon = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Show Ammo Icon",
+            true,
+            "Whether to show ammo count icon in hot bar.",
+            synced: false
+        );
+        AmmoIconPosition = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Icon Position",
+            new Vector2(0f, 32f),
+            "Icon Position.",
+            synced: false
+        );
+        AmmoIconSize = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Icon Size",
+            new Vector2(20f, 20f),
+            "Icon Size",
+            synced: false
+        );
+        AmmoTextSize = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Text Size",
+            16,
+            "Text Size",
+            synced: false
+        );
+        AmmoTextAlignment = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Text Alignment",
+            TextAlignmentOptions.TopRight,
+            "Text Alignment",
+            synced: false
+        ); 
+        AmmoTextColor = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Text Color",
+            new Color(1f, 1f, 1f, 1f),
+            "Text Color",
+            synced: false
+        );
+        AmmoTextPosition = Config.BindConfigInOrder(
+            AmmoCountSection,
+            "Text Positio",
+            new Vector2(-6f, -4f),
+            "Offset of text relative to icon",
+            synced: false
+        );
+
+        EnableAmmoCount.SettingChanged += UpdateSettings;
+        ShowAmmoIcon.SettingChanged += UpdateSettings;
+        AmmoIconPosition.SettingChanged += UpdateSettings;
+        AmmoIconSize.SettingChanged += UpdateSettings;
+        AmmoTextSize.SettingChanged += UpdateSettings; 
+        AmmoTextAlignment.SettingChanged += UpdateSettings;
+        AmmoTextColor.SettingChanged += UpdateSettings;
+        AmmoTextPosition.SettingChanged += UpdateSettings;
+
+        EnableAmmoCount.SettingChanged += SetUpdateIcon;
+        ShowAmmoIcon.SettingChanged += SetUpdateIcon;
+        AmmoIconPosition.SettingChanged += SetUpdateIcon;
+        AmmoIconSize.SettingChanged += SetUpdateIcon;
+        AmmoTextSize.SettingChanged += SetUpdateIcon;
+        AmmoTextAlignment.SettingChanged += SetUpdateIcon;
+        AmmoTextColor.SettingChanged += SetUpdateIcon;
+        AmmoTextPosition.SettingChanged += SetUpdateIcon;
     }
 
     private void UpdateConfigFile()
@@ -362,5 +453,10 @@ internal class ProjectileTweaks : BaseUnityPlugin
     private static void UpdateSettings(object obj, EventArgs e)
     {
         ShouldSaveConfig |= !ShouldSaveConfig;
+    }
+
+    private static void SetUpdateIcon(object obj, EventArgs e)
+    {
+        ShouldResetIcon |= !ShouldResetIcon;
     }
 }
