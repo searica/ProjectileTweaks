@@ -5,6 +5,15 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.6.0</td>
+			<td align="left">
+				<ul>
+					<li>Added an ammo counter to weapons in the hotkey bar.</li>
+					<li>Refactored a bunch of code in preperation for future updates.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.5.2</td>
 			<td align="left">
 				<ul>

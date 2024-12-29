@@ -3,6 +3,9 @@ A lightweight gameplay mod that lets you customize how firing projectiles works.
 
 **Server-Side Info**: This mod works as a purely client side mod but can optionally be installed on the server to enforce custom configuration settings.
 
+## Version 1.6.0 Update Notice!
+Configuration settings have changed somewhat in this version. If you experience issues please delete your config file and let the mod regenerate it.
+
 ## Description
 ProjectileTweaks is intended to be a lightweight and open-source mod that provides an alternative to BetterArchery and BowPlugin. Some of ProjectileTweaks features also overlap with MagicPlugin but the two are fully compatible so you can still enjoy the extra features from MagicPlugin.
 
@@ -25,11 +28,14 @@ For staffs you can customize:
 
 The default configuration adjusts the spawn position of projectiles fired from staffs so that if spread is set to zero the projectile is aligned with the aiming crosshair.
 
+### Ammo Counter
+This mod adds an ammo counter to weapon icons in the hotkey bar and allows you to customize the appearance of the counter.
+
 ## Configuration
 A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created after running the game once with this mod. You can adjust the config values by editing this file using a text editor or in-game using the Configuration Manager. The mod has a built-in file watcher so either method will work and changes will be reflected in-game as you change the settings.
 
 <div class="header">
-	<h3>Bow Section</h3>
+	<h3>Bow Tweaks</h3>
   These settings control features relating to bows.
 </div>
 <table>
@@ -109,7 +115,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 </table>
 
 <div class="header">
-	<h3>Bomb Section</h3>
+	<h3>Bomb Tweaks</h3>
   These settings control features relating to bows.
 </div>
 <table>
@@ -178,7 +184,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 </table>
 
 <div class="header">
-	<h3>Crossbow Section</h3>
+	<h3>Crossbow Tweaks</h3>
   These settings control features relating to crossbows.
 </div>
 <table>
@@ -258,7 +264,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 </table>
 
 <div class="header">
-	<h3>Spears Section</h3>
+	<h3>Spears Tweaks</h3>
   These settings control features relating to spears.
 </div>
 <table>
@@ -327,7 +333,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 </table>
 
 <div class="header">
-	<h3>Staffs Section</h3>
+	<h3>Staffs Tweaks</h3>
   These settings control features relating to staffs.
 </div>
 <table>
@@ -396,7 +402,7 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
 </table>
 
 <div class="header">
-	<h3>Zoom Section</h3>
+	<h3>Zoom</h3>
   These settings control features relating to zooming in while aiming.
 </div>
 <table>
@@ -496,6 +502,9 @@ A config file BepInEx/config/Searica.Valheim.ProjectileTweaks.cfg is created aft
         </tr>
     </tbody>
 </table>
+
+
+There are also some configuration settings to customize the ammo counter that shows up in the hotkey bar when you equip a weapon that uses ammo to the hotkey bar.
 
 ## Compatibility
 These are non-exhaustive lists, feel free to let me know if you want a mod added to any of the lists.
