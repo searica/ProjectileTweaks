@@ -1,15 +1,15 @@
 ﻿// Ignore Spelling: Plugin Jotunn
-using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
-using Jotunn.Utils;
-using UnityEngine;
-using System;
-using TMPro;
+using Jotunn.Extensions;
 using Jotunn.Managers;
-using Configs;
+using Jotunn.Utils;
 using Logging;
+using System;
+using System.Reflection;
+using TMPro;
+using UnityEngine;
 
 
 namespace ProjectileTweaks;
@@ -23,7 +23,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
     public const string Author = "Searica";
     public const string PluginName = "ProjectileTweaks";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.6.0";
+    public const string PluginVersion = "1.7.0";
 
     // Use this class to add your own localization to the game
     // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
@@ -40,6 +40,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
     private static bool ShouldSaveConfig = false;
     
+    internal static ConfigFileWatcher ConfigFileWatcher;
+
     internal class ProjectileConfig
     {
         public string SectionName { get; private set; }        
@@ -56,7 +58,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
         /// </summary>
         /// <param name="configFile"></param>
         /// <param name="sectionName"></param>
-        /// <param name="projectileType"></param>
         /// <param name="defaultSpread"></param>
         /// <param name="defaultVelocity"></param>
         /// <param name="defaultLaunchAngle"></param>
@@ -77,7 +78,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
         )
         {
             SectionName = sectionName;
-            if (defaultLoadSpeed != float.NaN)
+            if (!float.IsNaN(defaultLoadSpeed))
             {
                 LoadSpeed = configFile.BindConfigInOrder(
                     sectionName,
@@ -88,8 +89,12 @@ internal class ProjectileTweaks : BaseUnityPlugin
                 );
                 LoadSpeed.SettingChanged += UpdateSettings;
             }
+            else
+            {
+                LoadSpeed = null;
+            }
 
-            if (defaultSpread != float.NaN)
+            if (!float.IsNaN(defaultSpread))
             {
                 SpreadMult = configFile.BindConfigInOrder(
                     sectionName,
@@ -100,8 +105,12 @@ internal class ProjectileTweaks : BaseUnityPlugin
                 );
                 SpreadMult.SettingChanged += UpdateSettings;
             }
+            else
+            {
+                SpreadMult = null;
+            }
 
-            if (defaultVelocity != float.NaN)
+            if (!float.IsNaN(defaultVelocity))
             {
                 VelocityMult = configFile.BindConfigInOrder(
                     sectionName,
@@ -112,8 +121,12 @@ internal class ProjectileTweaks : BaseUnityPlugin
                 );
                 VelocityMult.SettingChanged += UpdateSettings;
             }
+            else
+            {
+                VelocityMult = null;
+            }
 
-            if (defaultLaunchAngle != float.NaN)
+            if (!float.IsNaN(defaultLaunchAngle))
             {
                 string vanillaAngle = defaultVanillaLaunchAngle != float.NaN ? $"Vanilla default is {defaultVanillaLaunchAngle}. " : string.Empty;
                 LaunchAngle = configFile.BindConfigInOrder(
@@ -126,8 +139,12 @@ internal class ProjectileTweaks : BaseUnityPlugin
                 );
                 LaunchAngle.SettingChanged += UpdateSettings;
             }
+            else
+            {
+                LaunchAngle = null;
+            }
 
-            if (defaultHorizontalOffset != float.NaN)
+            if (!float.IsNaN(defaultHorizontalOffset))
             {
                 HorizontalOffset = configFile.BindConfigInOrder(
                     sectionName,
@@ -138,8 +155,12 @@ internal class ProjectileTweaks : BaseUnityPlugin
                 );
                 HorizontalOffset.SettingChanged += UpdateSettings;
             }
+            else
+            {
+                HorizontalOffset = null;    
+            }
 
-            if (defaultVerticalOffset != float.NaN)
+            if (!float.IsNaN(defaultVerticalOffset))
             {
                 VerticalOffset = configFile.BindConfigInOrder(
                     sectionName,
@@ -149,6 +170,10 @@ internal class ProjectileTweaks : BaseUnityPlugin
                     acceptableValues: new AcceptableValueRange<float>(-0.75f, 0.75f)
                 );
                 VerticalOffset.SettingChanged += UpdateSettings;
+            }
+            else 
+            {
+                VerticalOffset = null;
             }
         }
     }
@@ -194,7 +219,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
         Instance = this;
         Log.Init(this.Logger);
 
-        Config.Init(PluginGUID, false);
+        Config.SetSaveOnConfigSet(false);
         SetUpConfigEntries();
         Config.Save();
 
@@ -202,7 +227,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
         Game.isModded = true;
 
-        Config.SetupWatcher();
+        ProjectileTweaks.ConfigFileWatcher = new ConfigFileWatcher(Config);
+     
         SynchronizationManager.OnConfigurationWindowClosed += () =>
         {
             UpdateConfigFile();

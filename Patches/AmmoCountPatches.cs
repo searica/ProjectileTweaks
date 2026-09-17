@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static ItemDrop;
-using Logging;
+using Jotunn.Managers;
 
 namespace ProjectileTweaks.Patches;
 
@@ -13,31 +12,19 @@ namespace ProjectileTweaks.Patches;
 internal static class AmmoCountPatches
 {
     private const string FontName = "Valheim-AveriaSansLibre";
-    private static bool HasWarnedAboutFont = false;
-    private const FontStyles FontStyle = FontStyles.Bold;
+    private const FontStyles FontStyle = FontStyles.Normal;
     private static TMP_FontAsset _CurrentFont = null;
     private const string AmmoCountName = "AmmoCount";
+    private const string AmmoTextName = "AmmoText";
+    private const string AmmoIconName = "AmmoIcon";
+
     private static TMP_FontAsset CurrentFont
     {
         get
         {
             if (_CurrentFont is null)
-            { 
-                TMP_FontAsset[] array = Resources.FindObjectsOfTypeAll<TMP_FontAsset>();
-                foreach (TMP_FontAsset tmp_FontAsset in array)
-                {
-                    if (tmp_FontAsset.name == FontName)
-                    {
-                        _CurrentFont = tmp_FontAsset;
-                        break;
-                    }
-                }
-            }
-
-            if (!HasWarnedAboutFont && _CurrentFont is null)
             {
-                HasWarnedAboutFont = true;
-                Log.LogWarning($"Could not find font {FontName}! Falling back to default font.");
+                _CurrentFont = GUIManager.Instance.TMP_AveriaSansLibre;  
             }
             return _CurrentFont;
         }
@@ -47,7 +34,8 @@ internal static class AmmoCountPatches
     [HarmonyPatch(typeof(HotkeyBar), nameof(HotkeyBar.Update))]
     private static void UpdateHotkeyBarAmmoCounter(HotkeyBar __instance)
     {
-        if (!__instance || !Player.m_localPlayer)
+        // wait until GUIManager is intialized and the correct font has been retrieved
+        if (!__instance || !Player.m_localPlayer || CurrentFont is null) 
         {
             return;
         }
@@ -91,32 +79,37 @@ internal static class AmmoCountPatches
     {
         // Create transform
         GameObject ammoCountGameObject = new(AmmoCountName);
+        ammoCountGameObject.SetActive(false);
         ammoCountGameObject.transform.SetParent(gameObject.transform);
         ammoCountGameObject.AddComponent<RectTransform>().anchoredPosition = Vector2.zero;
         ammoCount = ammoCountGameObject.transform;
 
-        // Add text
-        GameObject textGameObject = new("Text");
+        // Add text object
+        GameObject textGameObject = new(AmmoTextName);
+        textGameObject.SetActive(false);
+
         textGameObject.transform.SetParent(ammoCountGameObject.transform);
         TextMeshProUGUI textMeshProUGUI = textGameObject.AddComponent<TextMeshProUGUI>();
+
+        // Set text location
         RectTransform rectTransform = textMeshProUGUI.rectTransform;
         rectTransform.anchoredPosition = ProjectileTweaks.Instance.AmmoTextPosition.Value;
         rectTransform.sizeDelta = new Vector2(90f, 90f);
 
         // Set text
-        if (CurrentFont != null) 
-        {
-            textMeshProUGUI.font = CurrentFont;
-        }    
+        textMeshProUGUI.font = CurrentFont;
         textMeshProUGUI.fontSize = ProjectileTweaks.Instance.AmmoTextSize.Value;
         textMeshProUGUI.fontStyle = FontStyle;
         textMeshProUGUI.alignment = ProjectileTweaks.Instance.AmmoTextAlignment.Value;
         textMeshProUGUI.color = ProjectileTweaks.Instance.AmmoTextColor.Value;
 
+        // Enable object after setting up text
+        textGameObject.SetActive(true);
+
         // set up icon
         if (ProjectileTweaks.Instance.ShowAmmoIcon.Value)
         {
-            GameObject iconGameObject = new("Icon");
+            GameObject iconGameObject = new(AmmoIconName);
             iconGameObject.transform.SetParent(ammoCountGameObject.transform);
             iconGameObject.AddComponent<Image>();
             RectTransform iconRectTransform = iconGameObject.GetComponent<RectTransform>();
@@ -138,11 +131,11 @@ internal static class AmmoCountPatches
             return;
         }
 
-        go.SetActive(value: true);
-        go.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = ammoItemData.m_stack.ToString();
+        go.SetActive(true);
+        go.transform.Find(AmmoTextName).GetComponent<TextMeshProUGUI>().text = ammoItemData.m_stack.ToString();
         if (ProjectileTweaks.Instance.ShowAmmoIcon.Value)
         {
-            go.transform.Find("Icon").GetComponent<Image>().sprite = ammoItemData.GetIcon();
+            go.transform.Find(AmmoIconName).GetComponent<Image>().sprite = ammoItemData.GetIcon();
         }
     }
 
