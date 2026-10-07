@@ -5,6 +5,14 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.7.1</td>
+			<td align="left">
+				<ul>
+					<li>Bugfix ammo counter text always being enabled.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.7.0</td>
 			<td align="left">
 				<ul>

@@ -104,7 +104,7 @@ internal static class AmmoCountPatches
         textMeshProUGUI.color = ProjectileTweaks.Instance.AmmoTextColor.Value;
 
         // Enable object after setting up text
-        textGameObject.SetActive(true);
+        textGameObject.SetActive(ProjectileTweaks.Instance.ShowAmmoIcon.Value);
 
         // set up icon
         if (ProjectileTweaks.Instance.ShowAmmoIcon.Value)
