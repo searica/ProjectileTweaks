@@ -8,10 +8,11 @@ namespace ProjectileTweaks.Patches;
 internal static class AttackPatch
 {
     private static ProjectileTweaks.ProjectileConfig RefProjectileConfig;
-    private static float m_projectileVel;
-    private static float m_projectileVelMin;
-    private static float m_projectileAccuracy;
-    private static float m_projectileAccuracyMin;
+    private static float cached_projectileVel;
+    private static float cached_projectileVelMin;
+    private static float cached_projectileAccuracy;
+    private static float cached_projectileAccuracyMin;
+    private static ItemDrop.ItemData WeaponRef;
 
     [HarmonyPostfix]
     [HarmonyBefore("blacks7ar.BowPlugin")]
@@ -19,8 +20,11 @@ internal static class AttackPatch
     [HarmonyPatch(typeof(Attack), nameof(Attack.Start))]
     internal static void AttackStartPrefix(Attack __instance)
     {
-        ItemDrop.ItemData weapon = GetPlayerWeapon(__instance);
-        if (TryGetProjectileConfig(weapon, out RefProjectileConfig))
+        if (!TryGetPlayerWeapon(__instance, out WeaponRef))
+        { 
+            return; 
+        }
+        if (TryGetProjectileConfig(WeaponRef, out RefProjectileConfig))
         {
             SetVelocity(__instance, RefProjectileConfig.VelocityMult);
             SetSpread(__instance, RefProjectileConfig.SpreadMult);
@@ -34,13 +38,13 @@ internal static class AttackPatch
     private static void SetVelocity(Attack attack, ConfigEntry<float> velocityMultiplier)
     {
         // store values for use with delegate
-        m_projectileVel = attack.m_projectileVel;
-        m_projectileVelMin = attack.m_projectileVelMin;
+        cached_projectileVel = attack.m_projectileVel;
+        cached_projectileVelMin = attack.m_projectileVelMin;
 
         velocityMultiplier.SettingChanged += (sender, e) =>
         {
-            attack.m_projectileVel = m_projectileVel * velocityMultiplier.Value;
-            attack.m_projectileVelMin = m_projectileVelMin * velocityMultiplier.Value;
+            attack.m_projectileVel = cached_projectileVel * velocityMultiplier.Value;
+            attack.m_projectileVelMin = cached_projectileVelMin * velocityMultiplier.Value;
         };
 
         attack.m_projectileVel *= velocityMultiplier.Value;
@@ -49,13 +53,13 @@ internal static class AttackPatch
 
     private static void SetSpread(Attack attack, ConfigEntry<float> spreadConfig)
     {
-        m_projectileAccuracy = attack.m_projectileAccuracy;
-        m_projectileAccuracyMin = attack.m_projectileAccuracyMin;
+        cached_projectileAccuracy = attack.m_projectileAccuracy;
+        cached_projectileAccuracyMin = attack.m_projectileAccuracyMin;
 
         spreadConfig.SettingChanged += (sender, e) =>
         {
-            attack.m_projectileAccuracy = m_projectileAccuracy * spreadConfig.Value;
-            attack.m_projectileAccuracyMin = m_projectileAccuracyMin * spreadConfig.Value;
+            attack.m_projectileAccuracy = cached_projectileAccuracy * spreadConfig.Value;
+            attack.m_projectileAccuracyMin = cached_projectileAccuracyMin * spreadConfig.Value;
         };
 
         attack.m_projectileAccuracy *= spreadConfig.Value;
@@ -76,8 +80,12 @@ internal static class AttackPatch
     [HarmonyPatch(typeof(Attack), nameof(Attack.GetProjectileSpawnPoint))]
     private static void GetProjectileSpawnPointPostfix(Attack __instance, ref Vector3 spawnPoint, ref Vector3 aimDir)
     {
-        ItemDrop.ItemData weapon = GetPlayerWeapon(__instance);
-        if(TryGetProjectileConfig(weapon, out RefProjectileConfig))
+        if (!TryGetPlayerWeapon(__instance, out WeaponRef))
+        {
+            return;
+        }
+
+        if (TryGetProjectileConfig(WeaponRef, out RefProjectileConfig))
         {
             ApplyOffset(
                 ref spawnPoint,
@@ -148,18 +156,23 @@ internal static class AttackPatch
         spawnPoint += new Vector3(0.0f, vertOffset, 0.0f);
     }
 
-    private static ItemDrop.ItemData GetPlayerWeapon(Attack attack)
+    /// <summary>
+    ///     Postfix patch runs on all attacks but we only care about getting the weapon from the local player
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <returns></returns>
+    private static bool TryGetPlayerWeapon(Attack attack, out ItemDrop.ItemData weapon)
     {
-        if (attack == null ||
-            attack.m_character is not Player player ||
-            !(player.m_name == "Human" ||
-            player == Player.m_localPlayer))
+        if (attack == null || !attack.m_character || !attack.m_character.IsPlayer() || attack.m_character != Player.m_localPlayer)
         {
-            return null;
+            weapon = null;
+            return false;
         }
 
-        return player.GetCurrentWeapon();
+        weapon = attack.m_character.GetCurrentWeapon();
+        return true;
     }
+
 
     private static bool IsBomb(ItemDrop.ItemData item)
     {
