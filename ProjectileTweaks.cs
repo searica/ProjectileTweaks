@@ -7,6 +7,7 @@ using Jotunn.Managers;
 using Jotunn.Utils;
 using Logging;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
     public const string Author = "Searica";
     public const string PluginName = "ProjectileTweaks";
     public const string PluginGUID = $"{Author}.Valheim.{PluginName}";
-    public const string PluginVersion = "1.7.1";
+    public const string PluginVersion = "1.8.0";
 
     // Use this class to add your own localization to the game
     // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
@@ -35,7 +36,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
     private const string BowSection = "Bow Tweaks";
     private const string XbowSection = "Crossbow Tweaks";
     private const string SpearSection = "Spear Tweaks";
-    private const string StaffSection = "Staff Tweaks";
+    private const string ThrowingStaffSection = "Staff Tweaks (Throwing)";
+    private const string ShootingStaffSection = "Staff Tweaks (Shooting)";
     private const string ZoomSection = "Zoom";
 
     private static bool ShouldSaveConfig = false;
@@ -51,6 +53,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
         public ConfigEntry<float> LoadSpeed { get; private set; }
         public ConfigEntry<float> VerticalOffset { get; private set; }
         public ConfigEntry<float> HorizontalOffset { get; private set; }
+
+        public ConfigEntry<float> DepthOffset { get; private set; }
 
         /// <summary>
         ///     Creates and binds config settings based on provided default values. If a default is NaN
@@ -74,7 +78,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
             float defaultVanillaLaunchAngle = float.NaN,
             float defaultLoadSpeed = 1f,
             float defaultVerticalOffset = float.NaN,
-            float defaultHorizontalOffset = float.NaN
+            float defaultHorizontalOffset = float.NaN,
+            float defaultDepthOffset = float.NaN
         )
         {
             SectionName = sectionName;
@@ -166,7 +171,7 @@ internal class ProjectileTweaks : BaseUnityPlugin
                     sectionName,
                     "Vertical Offset",
                     defaultVerticalOffset,
-                    "Offsets the location that projectiles are launched from when firing them.Positive shifts it upwards.Negative shifts it downwards.",
+                    "Offsets the location that projectiles are launched from when firing them. Positive shifts it upwards. Negative shifts it downwards.",
                     acceptableValues: new AcceptableValueRange<float>(-0.75f, 0.75f)
                 );
                 VerticalOffset.SettingChanged += UpdateSettings;
@@ -175,24 +180,48 @@ internal class ProjectileTweaks : BaseUnityPlugin
             {
                 VerticalOffset = null;
             }
+
+
+            if (!float.IsNaN(defaultDepthOffset))
+            {
+                DepthOffset = configFile.BindConfigInOrder(
+                    sectionName,
+                    "Depth Offset",
+                    defaultDepthOffset,
+                    "Offsets the location that projectiles are launched from when firing them. Positive shifts it away from your character. Negative shifts it towards your character.",
+                    acceptableValues: new AcceptableValueRange<float>(-0.75f, 0.75f)
+                );
+                DepthOffset.SettingChanged += UpdateSettings;
+            }
+            else
+            {
+                DepthOffset = null;
+            }
         }
     }
 
-    internal ProjectileConfig BowTweaks;
-    internal ProjectileConfig BombTweaks;
-    internal ProjectileConfig XBowTweaks;
-    internal ProjectileConfig SpearTweaks;
-    internal ProjectileConfig StaffTweaks;
+    internal static ProjectileConfig BowTweaks;
+    internal static ProjectileConfig BombTweaks;
+    internal static ProjectileConfig XBowTweaks;
+    internal static ProjectileConfig SpearTweaks;
+    internal static ProjectileConfig ThrowingStaffTweaks;
+    internal static ProjectileConfig ShootingStaffTweaks;
+
+    internal static ConfigEntry<string> ThrowingStavesConfig;
+    internal static ConfigEntry<string> ShootingStavesConfig;
+    internal static readonly HashSet<string> ThrowingStaffNames = [];
+    internal static readonly HashSet<string> ShootingStaffNames = [];
+    internal static bool ShouldUpdateStaffNames = true;
 
     // Zoom settings
-    internal ConfigEntry<bool> EnableBowZoom { get; private set; }
-    internal ConfigEntry<bool> EnableXBowZoom { get; private set; }
-    internal ConfigEntry<KeyCode> ZoomKey { get; private set; }
-    internal ConfigEntry<KeyCode> CancelDrawKey { get; private set; }
-    internal ConfigEntry<float> StayInZoomTime { get; private set; }
-    internal ConfigEntry<float> TimeToZoomIn { get; private set; }
-    internal ConfigEntry<float> ZoomFactor { get; private set; }
-    internal  ConfigEntry<bool> AutoBowZoom { get; private set; }
+    internal static ConfigEntry<bool> EnableBowZoom { get; private set; }
+    internal static ConfigEntry<bool> EnableXBowZoom { get; private set; }
+    internal static ConfigEntry<KeyCode> ZoomKey { get; private set; }
+    internal static ConfigEntry<KeyCode> CancelDrawKey { get; private set; }
+    internal static ConfigEntry<float> StayInZoomTime { get; private set; }
+    internal static ConfigEntry<float> TimeToZoomIn { get; private set; }
+    internal static ConfigEntry<float> ZoomFactor { get; private set; }
+    internal  static ConfigEntry<bool> AutoBowZoom { get; private set; }
 
     /// <summary>
     ///     Bool indicating if zooming is enabled for bow || crossbow
@@ -202,13 +231,13 @@ internal class ProjectileTweaks : BaseUnityPlugin
 
     // Ammo count settings
     private const string AmmoCountSection = "Ammo Count";
-    internal ConfigEntry<bool> ShowAmmoIcon { get; private set; }
-    internal ConfigEntry<Vector2> AmmoIconPosition { get; private set; }
-    internal ConfigEntry<Vector2> AmmoIconSize { get; private set; }
-    internal ConfigEntry<int> AmmoTextSize { get; private set; }
-    internal ConfigEntry<TextAlignmentOptions> AmmoTextAlignment { get; private set; }
-    internal ConfigEntry<Color> AmmoTextColor { get; private set; } 
-    internal ConfigEntry<Vector2> AmmoTextPosition { get; private set; }
+    internal static ConfigEntry<bool> ShowAmmoIcon { get; private set; }
+    internal static ConfigEntry<Vector2> AmmoIconPosition { get; private set; }
+    internal static ConfigEntry<Vector2> AmmoIconSize { get; private set; }
+    internal static ConfigEntry<int> AmmoTextSize { get; private set; }
+    internal static ConfigEntry<TextAlignmentOptions> AmmoTextAlignment { get; private set; }
+    internal static ConfigEntry<Color> AmmoTextColor { get; private set; } 
+    internal static ConfigEntry<Vector2> AmmoTextPosition { get; private set; }
     internal static bool ShouldResetIcon { get; set; } = true;
 
     /// <summary>
@@ -231,11 +260,11 @@ internal class ProjectileTweaks : BaseUnityPlugin
      
         SynchronizationManager.OnConfigurationWindowClosed += () =>
         {
-            UpdateConfigFile();
+            UpdatePlugin();
         };
         SynchronizationManager.OnConfigurationSynchronized += (sender, e) =>
         {
-            UpdateConfigFile();
+            UpdatePlugin();
         };
     }
 
@@ -258,7 +287,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
             defaultVanillaLaunchAngle: 0f,
             defaultLoadSpeed: 1f,
             defaultHorizontalOffset: 0.2f,
-            defaultVerticalOffset: 0.2f
+            defaultVerticalOffset: 0.2f,
+            defaultDepthOffset: -0.25f
         );
 
         BombTweaks = new ProjectileConfig(
@@ -270,7 +300,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
             defaultVanillaLaunchAngle: 0f,
             defaultLoadSpeed: float.NaN,
             defaultHorizontalOffset: 0.0f,
-            defaultVerticalOffset: 0.5f
+            defaultVerticalOffset: 0.5f,
+            defaultDepthOffset: -0.25f
         );
 
         XBowTweaks = new ProjectileConfig(
@@ -282,7 +313,8 @@ internal class ProjectileTweaks : BaseUnityPlugin
             defaultVanillaLaunchAngle: -1f,
             defaultLoadSpeed: 1f,
             defaultHorizontalOffset: 0.0f,
-            defaultVerticalOffset: 0.0f
+            defaultVerticalOffset: 0.0f,
+            defaultDepthOffset: -0.25f
         );
 
         SpearTweaks = new ProjectileConfig(
@@ -294,21 +326,66 @@ internal class ProjectileTweaks : BaseUnityPlugin
             defaultVanillaLaunchAngle: 0f,
             defaultLoadSpeed: float.NaN,
             defaultHorizontalOffset: 0.1f,
-            defaultVerticalOffset: 0.5f
+            defaultVerticalOffset: 0.5f,
+            defaultDepthOffset: -0.25f
         );
 
-        StaffTweaks = new ProjectileConfig(
+        // Elemental Magic
+        // Dundr (StaffLightning) - Animation State: Crossbows, Attack Animation: staff_lightningshot
+        // Staff of Embers (StaffFireBall) - Animation State: Staves, Attack Animation: staff_fireball
+        // Staff of Frost (StaffIceShards) - Animation State: Staves, Attack Animation: staff_rapidfire
+        // Staff of Fracturing (StaffClusterBombs) - Animation State: Staves, Attack Animation: staff_fireball
+        // Staff of the Wild (StaffGreenRoots) - Animation State: Staves
+        // Lightning Strike (StaffThunderblood) - Animation State: Staves
+
+        // Blood Magic
+        // Echo Spike (StaffOrbofAhri) - Animation State: Staves, Attack Animation: staff_thrust
+        // Trollstav (StaffRedTroll) - Animation State: Staves, Attack Animation: 
+
+        ThrowingStavesConfig = Config.BindConfigInOrder(
+            ThrowingStaffSection,
+            "Throwing Staves",
+            "StaffFireBall,StaffClusterBombs,StaffGreenRoots",
+            "Comma or semi-colon seperated list of internal game ids for the staffs that use a throwing or lobbing animation when attacking."
+        );
+        ThrowingStaffTweaks = new ProjectileConfig(
             Config,
-            StaffSection,
+            ThrowingStaffSection,
             defaultSpread: 1f,
             defaultVelocity: 1f,
             defaultLaunchAngle: float.NaN,
             defaultVanillaLaunchAngle: 0f,
             defaultLoadSpeed: float.NaN,
             defaultHorizontalOffset: 0.0f,
-            defaultVerticalOffset: 0.3f
+            defaultVerticalOffset: 0.5f,
+            defaultDepthOffset: -0.25f
         );
-       
+        ThrowingStavesConfig.SettingChanged += UpdateSettings;
+        ThrowingStavesConfig.SettingChanged += UpdateStaffNamesConfig;
+
+        ShootingStavesConfig = Config.BindConfigInOrder(
+            ShootingStaffSection,
+            "Shooting Staves",
+            "StaffIceShards,StaffOrbofAhri",
+            "Comma or semi-colon seperated list of internal game ids for the staffs that use a crossbow or shooting like animation when attacking."
+        );
+        ShootingStavesConfig.SettingChanged += UpdateSettings;
+        ShootingStavesConfig.SettingChanged += UpdateStaffNamesConfig;
+
+        ShootingStaffTweaks = new ProjectileConfig(
+            Config,
+            ShootingStaffSection,
+            defaultSpread: 1f,
+            defaultVelocity: 1f,
+            defaultLaunchAngle: float.NaN,
+            defaultVanillaLaunchAngle: 0f,
+            defaultLoadSpeed: float.NaN,
+            defaultHorizontalOffset: 0.0f,
+            defaultVerticalOffset: 0.2f,
+            defaultDepthOffset: -0.25f
+        );
+        UpdateStaffTypeHashSets(forceUpdate: true);  // force initial population of lists
+
         // Zoom Configs
         EnableBowZoom = Config.BindConfigInOrder(
             ZoomSection,
@@ -379,7 +456,6 @@ internal class ProjectileTweaks : BaseUnityPlugin
         );
         AutoBowZoom.SettingChanged += UpdateSettings;
 
-
         // Ammo Icon configs
         ShowAmmoIcon = Config.BindConfigInOrder(
             AmmoCountSection,
@@ -448,8 +524,9 @@ internal class ProjectileTweaks : BaseUnityPlugin
         AmmoTextPosition.SettingChanged += SetUpdateIcon;
     }
 
-    private void UpdateConfigFile()
+    private void UpdatePlugin()
     {
+        UpdateStaffTypeHashSets(); 
         if (ShouldSaveConfig)
         {
             Config.Save();
@@ -462,8 +539,43 @@ internal class ProjectileTweaks : BaseUnityPlugin
         ShouldSaveConfig |= !ShouldSaveConfig;
     }
 
+    private static void UpdateStaffNamesConfig(object obj, EventArgs e)
+    {
+        ShouldUpdateStaffNames |= !ShouldUpdateStaffNames;
+    }
+
     private static void SetUpdateIcon(object obj, EventArgs e)
     {
         ShouldResetIcon |= !ShouldResetIcon;
+    }
+
+    /// <summary>
+    ///     Update custom precision grid snapping list if the setting has been changed and the cached list is 
+    ///     no longer valid. Also resets the current position in the custom precision grid snapping list to 
+    ///     prevent attempting to access values that are out of bounds when the list shrinks. Also sets the 
+    ///     current grid precision to the first entry in the custom list if it is populated.
+    /// </summary>
+    private static void UpdateStaffTypeHashSets(bool forceUpdate = false)
+    {
+        if (!ShouldUpdateStaffNames && !forceUpdate)
+        {
+            return;
+        }
+        // reset hashsets before updating them
+        ShootingStaffNames.Clear();
+        ThrowingStaffNames.Clear();
+        ShootingStaffNames.UnionWith(ParseStringList(ProjectileTweaks.ShootingStavesConfig.Value));
+        ThrowingStaffNames.UnionWith(ParseStringList(ProjectileTweaks.ThrowingStavesConfig.Value));
+        ShouldUpdateStaffNames = false;
+    }
+
+    private static string[] ParseStringList(string stringList)
+    {
+        string trimmedString = stringList.Trim();
+        if (trimmedString.Length >= 1)
+        {
+            return trimmedString.Split([',', ';'], System.StringSplitOptions.RemoveEmptyEntries);
+        }
+        return [];
     }
 }

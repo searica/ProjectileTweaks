@@ -4,9 +4,10 @@ using BepInEx.Configuration;
 
 namespace ProjectileTweaks.Patches;
 
-[HarmonyPatch(typeof(Attack))]
+[HarmonyPatch]
 internal static class AttackPatch
 {
+    private static ProjectileTweaks.ProjectileConfig RefProjectileConfig;
     private static float m_projectileVel;
     private static float m_projectileVelMin;
     private static float m_projectileAccuracy;
@@ -15,41 +16,18 @@ internal static class AttackPatch
     [HarmonyPostfix]
     [HarmonyBefore("blacks7ar.BowPlugin")]
     [HarmonyPriority(Priority.VeryHigh)]
-    [HarmonyPatch(nameof(Attack.Start))]
+    [HarmonyPatch(typeof(Attack), nameof(Attack.Start))]
     internal static void AttackStartPrefix(Attack __instance)
     {
         ItemDrop.ItemData weapon = GetPlayerWeapon(__instance);
-        if (weapon == null) { return; }
-
-        Skills.SkillType skillType = weapon.m_shared.m_skillType;
-        if (skillType == Skills.SkillType.Bows)
+        if (TryGetProjectileConfig(weapon, out RefProjectileConfig))
         {
-            SetVelocity(__instance, ProjectileTweaks.Instance.BowTweaks.VelocityMult);
-            SetSpread(__instance, ProjectileTweaks.Instance.BowTweaks.SpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.Instance.BowTweaks.LaunchAngle);
-        }
-        else if (skillType == Skills.SkillType.Crossbows)
-        {
-            SetVelocity(__instance, ProjectileTweaks.Instance.XBowTweaks.VelocityMult);
-            SetSpread(__instance, ProjectileTweaks.Instance.XBowTweaks.SpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.Instance.XBowTweaks.LaunchAngle);
-        }
-        else if (skillType == Skills.SkillType.Spears)
-        {
-            SetVelocity(__instance, ProjectileTweaks.Instance.SpearTweaks.VelocityMult);
-            SetSpread(__instance, ProjectileTweaks.Instance.SpearTweaks.SpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.Instance.SpearTweaks.LaunchAngle);
-        }
-        else if (skillType == Skills.SkillType.ElementalMagic)
-        {
-            SetVelocity(__instance, ProjectileTweaks.Instance.StaffTweaks.VelocityMult);
-            SetSpread(__instance, ProjectileTweaks.Instance.StaffTweaks.SpreadMult);
-        }
-        else if (IsBomb(weapon))
-        {
-            SetVelocity(__instance, ProjectileTweaks.Instance.BombTweaks.VelocityMult);
-            SetSpread(__instance, ProjectileTweaks.Instance.BombTweaks.SpreadMult);
-            SetLaunchAngle(__instance, ProjectileTweaks.Instance.BombTweaks.LaunchAngle);
+            SetVelocity(__instance, RefProjectileConfig.VelocityMult);
+            SetSpread(__instance, RefProjectileConfig.SpreadMult);
+            if (RefProjectileConfig.LaunchAngle is not null)
+            {
+                SetLaunchAngle(__instance, RefProjectileConfig.LaunchAngle);
+            }
         }
     }
 
@@ -95,67 +73,78 @@ internal static class AttackPatch
     }
 
     [HarmonyPostfix]
-    [HarmonyPatch(nameof(Attack.GetProjectileSpawnPoint))]
+    [HarmonyPatch(typeof(Attack), nameof(Attack.GetProjectileSpawnPoint))]
     private static void GetProjectileSpawnPointPostfix(Attack __instance, ref Vector3 spawnPoint, ref Vector3 aimDir)
     {
         ItemDrop.ItemData weapon = GetPlayerWeapon(__instance);
-        if (weapon == null) { return; }
+        if(TryGetProjectileConfig(weapon, out RefProjectileConfig))
+        {
+            ApplyOffset(
+                ref spawnPoint,
+                ref aimDir,
+                RefProjectileConfig.VerticalOffset.Value,
+                RefProjectileConfig.HorizontalOffset.Value,
+                RefProjectileConfig.DepthOffset.Value
+            );
+        }
+    }
 
-        // I think that I just want to use the aimDir vector to rotate the offsets
-        // and then change the spawn point based on the config
+    private static bool TryGetProjectileConfig(ItemDrop.ItemData weapon, out ProjectileTweaks.ProjectileConfig projectileConfig)
+    {
+        if (weapon == null) {
+            projectileConfig = null;
+            return false; 
+        }
+
         Skills.SkillType skillType = weapon.m_shared.m_skillType;
         if (skillType == Skills.SkillType.Bows)
         {
-            ApplyOffset(
-                ref spawnPoint,
-                ref aimDir,
-                ProjectileTweaks.Instance.BowTweaks.VerticalOffset.Value,
-                ProjectileTweaks.Instance.BowTweaks.HorizontalOffset.Value);
+            projectileConfig = ProjectileTweaks.BowTweaks;
+            return true;
         }
         else if (skillType == Skills.SkillType.Crossbows)
         {
-            ApplyOffset(
-                ref spawnPoint,
-                ref aimDir,
-                ProjectileTweaks.Instance.XBowTweaks.VerticalOffset.Value,
-                ProjectileTweaks.Instance.XBowTweaks.HorizontalOffset.Value);
+            projectileConfig = ProjectileTweaks.XBowTweaks;
+            return true; ;
         }
         else if (skillType == Skills.SkillType.Spears)
         {
-            ApplyOffset(
-                ref spawnPoint,
-                ref aimDir,
-                ProjectileTweaks.Instance.SpearTweaks.VerticalOffset.Value,
-                ProjectileTweaks.Instance.SpearTweaks.HorizontalOffset.Value);
+            projectileConfig = ProjectileTweaks.SpearTweaks;
+            return true;
         }
-        else if (skillType == Skills.SkillType.ElementalMagic)
+        else if (skillType == Skills.SkillType.ElementalMagic || skillType == Skills.SkillType.BloodMagic)
         {
-            ApplyOffset(
-                ref spawnPoint,
-                ref aimDir,
-                ProjectileTweaks.Instance.StaffTweaks.VerticalOffset.Value,
-                ProjectileTweaks.Instance.StaffTweaks.HorizontalOffset.Value);
+            if (ProjectileTweaks.ShootingStaffNames.Contains(weapon.m_dropPrefab.name))
+            {
+                projectileConfig = ProjectileTweaks.ShootingStaffTweaks;
+                return true;
+            }
+            else if (ProjectileTweaks.ThrowingStaffNames.Contains(weapon.m_dropPrefab.name))
+            {
+                projectileConfig = ProjectileTweaks.ThrowingStaffTweaks;
+                return true;
+            }
         }
         else if (IsBomb(weapon))
         {
-            ApplyOffset(
-                ref spawnPoint,
-                ref aimDir,
-                ProjectileTweaks.Instance.BombTweaks.VerticalOffset.Value,
-                ProjectileTweaks.Instance.BombTweaks.HorizontalOffset.Value);
+            projectileConfig = ProjectileTweaks.BombTweaks;
+            return true;
         }
+
+        projectileConfig = null;
+        return false;
     }
 
     private static void ApplyOffset(
         ref Vector3 spawnPoint,
         ref Vector3 aimDir,
         float vertOffset,
-        float horzOffset
+        float horzOffset,
+        float depthOffset
     )
     {
-        Vector3 horizontalOffset = new Vector3(aimDir.z, 0, -aimDir.x).normalized;
-        horizontalOffset *= horzOffset;
-        spawnPoint += horizontalOffset;
+        spawnPoint += depthOffset * (new Vector3(aimDir.x, 0.0f, aimDir.z).normalized);
+        spawnPoint += horzOffset * (new Vector3(aimDir.z, 0.0f, -aimDir.x).normalized);
         spawnPoint += new Vector3(0.0f, vertOffset, 0.0f);
     }
 

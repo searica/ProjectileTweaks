@@ -93,28 +93,28 @@ internal static class AmmoCountPatches
 
         // Set text location
         RectTransform rectTransform = textMeshProUGUI.rectTransform;
-        rectTransform.anchoredPosition = ProjectileTweaks.Instance.AmmoTextPosition.Value;
+        rectTransform.anchoredPosition = ProjectileTweaks.AmmoTextPosition.Value;
         rectTransform.sizeDelta = new Vector2(90f, 90f);
 
         // Set text
         textMeshProUGUI.font = CurrentFont;
-        textMeshProUGUI.fontSize = ProjectileTweaks.Instance.AmmoTextSize.Value;
+        textMeshProUGUI.fontSize = ProjectileTweaks.AmmoTextSize.Value;
         textMeshProUGUI.fontStyle = FontStyle;
-        textMeshProUGUI.alignment = ProjectileTweaks.Instance.AmmoTextAlignment.Value;
-        textMeshProUGUI.color = ProjectileTweaks.Instance.AmmoTextColor.Value;
+        textMeshProUGUI.alignment = ProjectileTweaks.AmmoTextAlignment.Value;
+        textMeshProUGUI.color = ProjectileTweaks.AmmoTextColor.Value;
 
         // Enable object after setting up text
-        textGameObject.SetActive(ProjectileTweaks.Instance.ShowAmmoIcon.Value);
+        textGameObject.SetActive(ProjectileTweaks.ShowAmmoIcon.Value);
 
         // set up icon
-        if (ProjectileTweaks.Instance.ShowAmmoIcon.Value)
+        if (ProjectileTweaks.ShowAmmoIcon.Value)
         {
             GameObject iconGameObject = new(AmmoIconName);
             iconGameObject.transform.SetParent(ammoCountGameObject.transform);
             iconGameObject.AddComponent<Image>();
             RectTransform iconRectTransform = iconGameObject.GetComponent<RectTransform>();
-            iconRectTransform.anchoredPosition = ProjectileTweaks.Instance.AmmoIconPosition.Value;
-            iconRectTransform.sizeDelta = ProjectileTweaks.Instance.AmmoIconSize.Value;
+            iconRectTransform.anchoredPosition = ProjectileTweaks.AmmoIconPosition.Value;
+            iconRectTransform.sizeDelta = ProjectileTweaks.AmmoIconSize.Value;
         }
     }
 
@@ -133,7 +133,7 @@ internal static class AmmoCountPatches
 
         go.SetActive(true);
         go.transform.Find(AmmoTextName).GetComponent<TextMeshProUGUI>().text = ammoItemData.m_stack.ToString();
-        if (ProjectileTweaks.Instance.ShowAmmoIcon.Value)
+        if (ProjectileTweaks.ShowAmmoIcon.Value)
         {
             go.transform.Find(AmmoIconName).GetComponent<Image>().sprite = ammoItemData.GetIcon();
         }

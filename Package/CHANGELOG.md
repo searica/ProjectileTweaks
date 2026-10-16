@@ -5,6 +5,17 @@
 			<th align="center">Notes</th>
 		</tr>
 		<tr>
+			<td align="center">1.8.0</td>
+			<td align="left">
+				<ul>
+					<li>Added configurable depth offset for all projectile types. Defaults to -0.25m for all projectiles currently to make aiming up/down at enemies that are close to you easier.</li>
+					<li>Split staff tweaks into two different sections, one for throwing type staffs and one for shooting type staffs since they have very different animation and projetiles.</li>
+					<li>Added configurable lists of which staffs should be considered "throwing" or "shooting". Supports custom staffs from other mods, but you have to add them to the list in the config.</li>
+					<li>Tidied up code and improved performance slightly.</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
 			<td align="center">1.7.1</td>
 			<td align="left">
 				<ul>

@@ -75,7 +75,7 @@ internal static class ZoomManager
 
         if (attackHold) // use to cancel bow draw
         {
-            blockHold = Input.GetKey(ProjectileTweaks.Instance.CancelDrawKey.Value);
+            blockHold = Input.GetKey(ProjectileTweaks.CancelDrawKey.Value);
             return;
         }
 
@@ -102,8 +102,8 @@ internal static class ZoomManager
             return;
         }
 
-        bool isKeyPressed = Input.GetKey(ProjectileTweaks.Instance.ZoomKey.Value);
-        bool shouldZoomBow = (isKeyPressed || ProjectileTweaks.Instance.AutoBowZoom.Value) && bowDrawPercentage > PercTol;
+        bool isKeyPressed = Input.GetKey(ProjectileTweaks.ZoomKey.Value);
+        bool shouldZoomBow = (isKeyPressed || ProjectileTweaks.AutoBowZoom.Value) && bowDrawPercentage > PercTol;
         bool shouldZoomXbow = isKeyPressed && player.IsWeaponLoaded();
 
         if (shouldZoomBow || shouldZoomXbow)
@@ -125,8 +125,8 @@ internal static class ZoomManager
         ZoomInTimer += Time.deltaTime;
         CurrentZoomState = ZoomState.ZoomingIn;
 
-        float t = Mathf.InverseLerp(0.05f, ProjectileTweaks.Instance.TimeToZoomIn.Value, ZoomInTimer);
-        LastZoomFov = Mathf.Lerp(BaseFov, BaseFov / ProjectileTweaks.Instance.ZoomFactor.Value, t);
+        float t = Mathf.InverseLerp(0.05f, ProjectileTweaks.TimeToZoomIn.Value, ZoomInTimer);
+        LastZoomFov = Mathf.Lerp(BaseFov, BaseFov / ProjectileTweaks.ZoomFactor.Value, t);
         GameCamera.instance.m_fov = LastZoomFov;
         NewZoomFov = LastZoomFov;
     }
@@ -165,7 +165,7 @@ internal static class ZoomManager
     internal static void ProcessZoomOutDelay()
     {
         ZoomOutDelayTimer += Time.deltaTime;
-        if (ZoomOutDelayTimer > ProjectileTweaks.Instance.StayInZoomTime.Value)
+        if (ZoomOutDelayTimer > ProjectileTweaks.StayInZoomTime.Value)
         {
             ZoomOut();
         }
@@ -182,8 +182,8 @@ internal static class ZoomManager
         if (leftItem != null)
         {
             Skills.SkillType itemSkill = leftItem.m_shared.m_skillType;
-            bool isZoomableBow = ProjectileTweaks.Instance.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
-            bool isZoomableXbow = ProjectileTweaks.Instance.EnableXBowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
+            bool isZoomableBow = ProjectileTweaks.EnableBowZoom.Value && itemSkill == Skills.SkillType.Bows;
+            bool isZoomableXbow = ProjectileTweaks.EnableXBowZoom.Value && itemSkill == Skills.SkillType.Crossbows;
             return isZoomableBow || isZoomableXbow;
         }
 
